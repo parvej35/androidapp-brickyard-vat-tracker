@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:title="User Profile"
+            android:icon="@drawable/ic_menu_gallery"/>
+
+        <item
+            android:id="@+id/nav_password"
+            android:title="Update Password"
+            android:icon="@drawable/ic_menu_send"/>
+
+        <!--<item
+            android:id="@+id/nav_income"
+            android:title="Income Sector"
+            android:icon="@drawable/ic_correct_24"/>
+
+        <item
+            android:id="@+id/nav_expense"
+            android:title="Expense Sector"
+            android:icon="@drawable/ic_setting_128"/>-->
+
+        <item
+            android:id="@+id/nav_backup"
+            android:title="Backup Database"
+            android:icon="@drawable/ic_currency_24"/>
+
+        <item
+            android:id="@+id/nav_restore"
+            android:title="Restore Database"
+            android:icon="@drawable/ic_download_32"/>
+
+        <item
+            android:id="@+id/nav_share"
+            android:title="Share This App"
+            android:icon="@drawable/ic_menu_share"/>
+        <!--<item
+            android:id="@+id/nav_feedback"
+            android:title="Feedback" />-->
+        <item
+            android:id="@+id/nav_rate"
+            android:title="Rate The App 5*"
+            android:icon="@drawable/ic_star"/>
+        <!--<item
+            android:id="@+id/nav_version"
+            android:title="App Version" />-->
+        <!--<item
+            android:id="@+id/nav_policy"
+            android:title="Privacy and Policy" />-->
+
+        <!--<item
+            android:id="@+id/nav_contact"
+            android:title="More Applications"
+            android:icon="@drawable/ic_more"/>-->
+<!--    </group>-->
+
+<!--    <item android:title="Technovalley IT">-->
+<!--        <menu>-->
+            <!--<item
+                android:id="@+id/nav_about"
+                android:title="About Us"
+                android:icon="@drawable/ic_comment"/>-->
+
+            <!--<item
+                android:id="@+id/nav_more"
+                android:title="Contact With Us"
+                android:icon="@drawable/ic_comment"/>-->
+
+            <item
+                android:id="@+id/nav_moreapp"
+                android:title="More Applications"
+                android:icon="@drawable/ic_more"/>
+<!--        </menu>-->
+<!--    </item>-->
+    </group>
+</menu>

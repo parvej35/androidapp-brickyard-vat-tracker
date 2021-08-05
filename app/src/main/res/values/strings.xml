@@ -1,0 +1,104 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Brickyard Tracker</string>
+    <string name="db_backup_file_name">MT_Backup</string>
+
+    <string name="title_in_en">Money Tracker</string>
+    <string name="title_in_bn">একাউন্ট ম্যানেজার</string>
+
+    <string name="expense">Expense</string>
+    <string name="expense_in_bn">ব্যয়</string>
+
+    <string name="income">Income</string>
+    <string name="income_in_bn">আয়</string>
+    <string name="select">- Select -</string>
+    <string name="all_sector">- All Sector -</string>
+    <string name="both_sector">Both (Income and Expense)</string>
+
+    <string name="setting">Settings</string>
+    <string name="setting_in_bn">আয়</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Parvej Ahmed</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="app_version" tools:ignore="ExtraTranslation">1.0.1</string>
+    <string name="app_release_date">01-August-2019</string>
+    <string name="next_app_version">1.0.2</string>
+    <string name="next_release_date">Not Scheduled</string>
+
+    <string name="developer">TechnoValley IT</string>
+
+    <string name="privacy_and_policy_link">https://technovalleyit.blogspot.com/2019/08/privacy-policy-money-tracker-manage.html</string>
+
+    <string name="app_message">Completely free income and expense tracking application.</string>
+
+    <string name="app_link">https://play.google.com/store/apps/details?id=</string>
+
+    <string name="url_market_details">market://details?id=</string>
+    <string name="url_market_search_app">market://search?q=pub:</string>
+    <string name="url_playstore_search_app">http://play.google.com/store/search?q=pub:</string>
+    <string name="install_google_play_store">Install google play store and then try again.</string>
+
+    <string name="admob_app_id">ca-app-pub-9254048825255246~9018813194</string>
+
+<!--    <string name="banner_add_id_1">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="banner_add_id_1">ca-app-pub-9254048825255246/8223347097</string>
+
+    <string-array name="empty_arrays">
+        <item></item>
+    </string-array>
+
+    <string-array name="all_arrays">
+        <item>ALL</item>
+    </string-array>
+
+    <string-array name="type_arrays">
+        <item>Both (Income and Expense)</item>
+        <item>Income</item>
+        <item>Expense</item>
+    </string-array>
+
+    <string name="country_prompt">Choose a Country</string>
+    <string-array name="month_arrays">
+        <item></item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string name="year_prompt">Choose a Year</string>
+    <string-array name="year_arrays">
+        <item></item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+    </string-array>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_category">CategoryActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+
+</resources>

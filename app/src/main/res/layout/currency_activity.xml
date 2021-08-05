@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <!--<ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        android:fillViewport="true"
+        android:paddingBottom="60dp">-->
+
+        <TableLayout
+            android:id="@+id/inputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/layout_border">
+
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                android:fillViewport="true">
+                
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/layout_date1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/currencyButtonGroup"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent">
+                        <RadioButton
+                            android:id="@+id/rb1"
+                            android:text="Afghani  - AFN (Af)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+                        
+                        <RadioButton
+                            android:id="@+id/rb2"
+                            android:text="Australian Dollar  - AUD ($)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+                        
+                        <RadioButton
+                            android:id="@+id/rb3"
+                            android:text="Bangladeshi Taka  - BDT (৳)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+                        
+                        <RadioButton
+                            android:id="@+id/rb4"
+                            android:text="Brazilian Real  - BRL (R$)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb5"
+                            android:text="Canadian Dollar  - CAD ($)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb6"
+                            android:text="Chinese Yuan  - CNY (¥)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb7"
+                            android:text="Euro  - EUR (€)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb8"
+                            android:text="Hong Kong Dollar  - HKD ($)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb9"
+                            android:text="Indian Rupee  - INR (₹)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb10"
+                            android:text="Indonesian Pupiah  - IDR (Rp)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                        
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb11"
+                            android:text="Japanese Yen  - JPY (¥)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb12"
+                            android:text="Malaysian Ringgit  - MYR (RM)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb13"
+                            android:text="Pakistani Rupee  - PKR (Rs)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb14"
+                            android:text="Philippine Peso  - PHP (₱)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb15"
+                            android:text="Russian Ruble  - RUB (₽)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb16"
+                            android:text="Singapore Dollar  - SGD ($)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb17"
+                            android:text="Sri Lankan Rupee  - LKR (Rs)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb18"
+                            android:text="Swedish Krona  - SEK (kr)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb19"
+                            android:text="Swiss Franc  - CHF (CHF)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb20"
+                            android:text="Thai Baht  - THB (฿)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb21"
+                            android:text="Turkish Lira  - TRY (₺)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb22"
+                            android:text="Dirham  - AED (د.إ)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb23"
+                            android:text="Pounds  - GBP (£)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+
+                        <RadioButton
+                            android:id="@+id/rb24"
+                            android:text="US Dollar  - USD ($)"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="#b7b2b2" />
+                    </RadioGroup>
+                </LinearLayout>
+            </TableRow>
+                
+            </ScrollView>
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/layout_btnClear"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btnClear"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/holo_blue_light"
+                        android:text="Cancel"></Button>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btnSave"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/lightgreen"
+                        android:text="Save"></Button>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
+
+    <!--</ScrollView>-->
+
+    <!--<com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_add_id_3">
+    </com.google.android.gms.ads.AdView>-->
+</RelativeLayout>
+

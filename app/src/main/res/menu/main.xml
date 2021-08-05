@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--<item
+        android:id="@+id/action_rate"
+        android:title="Rate 5 Star"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_feedback"
+        android:title="Feedback"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_share"
+        android:title="Share App"
+        app:showAsAction="never" />-->
+
+    <item
+        android:id="@+id/action_close"
+        android:title="Close"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="Log out"
+        app:showAsAction="never" />
+</menu>
