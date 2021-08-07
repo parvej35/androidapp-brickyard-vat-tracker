@@ -33,7 +33,7 @@ public class UserProfile extends AppCompatActivity {
 
     TableRow titleTextTR, passTxtTR, lineViewTR;
 
-    ArrayAdapter<String> countryAdapter;
+    //ArrayAdapter<String> countryAdapter;
     //ArrayAdapter<String> currencyAdapter;
 
     @Override
@@ -53,13 +53,13 @@ public class UserProfile extends AppCompatActivity {
 
             //--------------------------------------------------------
             //List<String> countryList = Constant.populateCountryList();
-            List<String> countryList = Constant.populateCountryANdCurrencyList();
-            countryList.add(0, "");
+//            List<String> countryList = Constant.populateCountryANdCurrencyList();
+//            countryList.add(0, "");
 
-            countrySpinner = (Spinner) findViewById(R.id.countrySpinner);
-            countryAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, countryList);
-            countryAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-            countrySpinner.setAdapter(countryAdapter);
+//            countrySpinner = (Spinner) findViewById(R.id.countrySpinner);
+//            countryAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, countryList);
+//            countryAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//            countrySpinner.setAdapter(countryAdapter);
 
             //--------------------------------------------------------
             //List<String> currencyList = Constant.populateCurrencyList();
@@ -136,7 +136,7 @@ public class UserProfile extends AppCompatActivity {
                             return;
                         }
 
-                        String selectedCountryInfo = countrySpinner.getSelectedItem().toString();
+                        /*String selectedCountryInfo = countrySpinner.getSelectedItem().toString();
                         if(selectedCountryInfo == null || selectedCountryInfo.equalsIgnoreCase("")){
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UserProfile.this);
                             alertDialogBuilder.setMessage("Select country")
@@ -148,7 +148,7 @@ public class UserProfile extends AppCompatActivity {
                                     }).show();
 
                             return;
-                        }
+                        }*/
 
                         /*String currency = currencySpinner.getSelectedItem().toString();
                         if(currency == null || currency.equalsIgnoreCase("")){
@@ -181,11 +181,12 @@ public class UserProfile extends AppCompatActivity {
 
                         String isPassEnabled = enablePassProtecCheckBox.isChecked() ? "1" : "0";
 
-                        String[] countryInfoArray = selectedCountryInfo.split(Constant.HASH_TAG_WITH_SPACE);
-                        String country = countryInfoArray[0].trim();
-                        String currency = countryInfoArray[1].trim();
+//                        String[] countryInfoArray = selectedCountryInfo.split(Constant.HASH_TAG_WITH_SPACE);
+//                        String country = countryInfoArray[0].trim();
+//                        String currency = countryInfoArray[1].trim();
+                        //{"Bangladesh", "Bangladeshi taka", "BDT", "৳"}
 
-                        dbHelper.updateApplicationUserProfile(getApplicationContext(), new UserProfileBean(name, email, country, "", currency, password, isPassEnabled, ""));
+                        dbHelper.updateApplicationUserProfile(getApplicationContext(), new UserProfileBean(name, email, "Bangladesh", "", "Bangladeshi taka", password, isPassEnabled, ""));
 
                         Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                         startActivity(intent);

@@ -44,7 +44,7 @@
 
     <string name="admob_app_id">ca-app-pub-9254048825255246~9018813194</string>
 
-<!--    <string name="banner_add_id_1">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="banner_add_id_1">ca-app-pub-3940256099942544/6300978111</string>-->
     <string name="banner_add_id_1">ca-app-pub-9254048825255246/8223347097</string>
 
     <string-array name="empty_arrays">
@@ -99,6 +99,15 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
 
 
 </resources>

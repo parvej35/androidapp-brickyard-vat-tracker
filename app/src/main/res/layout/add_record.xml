@@ -33,7 +33,74 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
+                        android:text="Commissionerate"
+                        android:textColor="@color/darkblue"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/commissionerateLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.65"
+                    android:orientation="vertical"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/commissionerateTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/select"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/commissionerateImageLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/arrow_down2" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.5dp"
+                    android:background="#b7b2b2" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.30"
+                    android:background="@drawable/border_right"
+                    android:orientation="vertical"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="5dp"
                         android:text="Division"
                         android:textColor="@color/darkblue"
                         android:textSize="13sp"
@@ -54,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -83,6 +150,7 @@
                     android:layout_height="0.5dp"
                     android:background="#b7b2b2" />
             </TableRow>
+
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -99,7 +167,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Circle"
                         android:textColor="@color/darkblue"
                         android:textSize="13sp"
@@ -120,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -166,7 +234,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Sector"
                         android:textColor="@color/darkblue"
                         android:textSize="13sp"
@@ -187,7 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -244,7 +312,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Brickyard"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp"
@@ -265,7 +333,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:contentDescription=""
                         android:textColor="@color/black"
                         android:textSize="16sp" />
@@ -312,7 +380,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Address"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp"
@@ -377,7 +445,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Area"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp"
@@ -398,7 +466,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -444,7 +512,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Brick Type"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp"
@@ -465,7 +533,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -511,7 +579,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Status"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp"
@@ -532,7 +600,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -589,7 +657,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Financial Year"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="13sp"
@@ -610,7 +678,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/select"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -656,7 +724,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Installment 1"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="13sp"
@@ -719,7 +787,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Installment 2"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="13sp"
@@ -781,7 +849,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Installment 3"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="13sp"
@@ -855,7 +923,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:gravity="start|center"
                         android:text="Pre. Due"
                         android:textColor="@color/design_default_color_error"
@@ -981,7 +1049,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:gravity="start|center"
                         android:text="Total Paid"
                         android:textColor="@color/design_default_color_error"
@@ -1045,7 +1113,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:gravity="start|center"
                         android:text="Current Due"
                         android:textColor="@color/design_default_color_error"
@@ -1119,7 +1187,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="10dp"
+                        android:paddingLeft="5dp"
                         android:text="Comment"
                         android:textColor="@color/design_default_color_primary_dark"
                         android:textSize="13sp"

@@ -49,20 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--<LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:background="@color/yellow_transparant"
-                android:layout_weight="0.15"
-                android:gravity="center"
-                android:layout_marginLeft="5dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_population_32" />
-            </LinearLayout>-->
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -124,20 +110,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--<LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.15"
-                android:background="@color/yellow_transparant"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_email_32" />
-            </LinearLayout>-->
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -166,78 +138,6 @@
 
             <View
                 android:id="@+id/view2x"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:background="#b7b2b2" />
-        </TableRow>
-
-        <TableRow
-            android:paddingBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left"
-                    android:paddingLeft="5dp"
-                    android:text="Country and Currency (Required)"
-                    android:textColor="@color/light_blue"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <!--<LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:background="@color/yellow_transparant"
-                android:layout_weight="0.15"
-                android:gravity="center"
-                android:layout_marginLeft="5dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_world_32" />
-            </LinearLayout>-->
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-
-                <Spinner
-                    android:id="@+id/countrySpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/text_editor_border_2"
-                    android:entries="@array/empty_arrays" />
-            </LinearLayout>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <View
-                android:id="@+id/view4"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:layout_marginTop="5dp"

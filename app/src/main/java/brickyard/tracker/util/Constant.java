@@ -79,6 +79,9 @@ public class Constant {
             "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
     };
 
+    public static final String[] COMMISSIONERATE_ARRAY = {
+            "Custom, Excise & VAT (Dhaka South)", "Custom (Dhaka North)", "Custom (Dhaka West)", "Custom (Dhaka East)", "Custom & Excise (Khulna)", "Custom (Rajshahi)", "Custom (Sylhet)", "Custom (Cumilla)", "Custom (Chattogram)", "Custom (Jessore)"
+    };
     public static final String[] DIVISION_ARRAY = {"Barisal", "Chittagong", "Dhaka", "Khulna", "Mymensingh", "Rajshahi", "Rangpur", "Sylhet"};
 
     public static final String[][] CIRCLE_ARRAY = {

@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import brickyard.tracker.bean.BrickyardBean;
+import brickyard.tracker.bean.DivisionBean;
 import brickyard.tracker.bean.RecordBean;
 import brickyard.tracker.util.Constant;
 import brickyard.tracker.util.DbHelper;
@@ -31,7 +32,7 @@ public class AddRecord extends AppCompatActivity {
 
     DbHelper dbHelper;
 
-    TextView divisionTextView, circleTextView, sectorTextView;
+    TextView commissionerateTextView, divisionTextView, circleTextView, sectorTextView;
     TextView brickyardTextView, addressTextView, areaTextView, brickTypeTextView, statusTextView, financialYearTextView;
 
     EditText installment1, installment2, installment3, noteTextView;
@@ -46,6 +47,7 @@ public class AddRecord extends AppCompatActivity {
 
             dbHelper = new DbHelper(getApplicationContext());
 
+            commissionerateTextView = (TextView) findViewById(R.id.commissionerateTextView);
             divisionTextView = (TextView) findViewById(R.id.divisionTextView);
             circleTextView = (TextView) findViewById(R.id.circleTextView);
             sectorTextView = (TextView) findViewById(R.id.sectorTextView);
@@ -67,6 +69,13 @@ public class AddRecord extends AppCompatActivity {
             currentDueAmount = (EditText) findViewById(R.id.currentDueAmount);
 
             noteTextView = (EditText) findViewById(R.id.noteTextView);
+
+            //---COMMISSIONERATE-----------------------------------------------------------------------------------
+            LinearLayout commissionerateLayout = (LinearLayout) findViewById(R.id.commissionerateLayout);
+            commissionerateLayout.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { showCommissionerateList(); }});
+
+            LinearLayout commissionerateImageLayout = (LinearLayout) findViewById(R.id.commissionerateImageLayout);
+            commissionerateImageLayout.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { showCommissionerateList(); }});
 
             //---DIVISION-----------------------------------------------------------------------------------
             LinearLayout divisionLayout = (LinearLayout) findViewById(R.id.divisionLayout);
@@ -368,6 +377,7 @@ public class AddRecord extends AppCompatActivity {
         totalPaidAmount.setText("");
         currentDueAmount.setText("");
 
+        commissionerateTextView.setText(Constant.SELECT);
         divisionTextView.setText(Constant.SELECT);
         circleTextView.setText(Constant.SELECT);
         sectorTextView.setText(Constant.SELECT);
@@ -378,7 +388,110 @@ public class AddRecord extends AppCompatActivity {
         financialYearTextView.setText(Constant.SELECT);
     }
 
+    private void showCommissionerateList() {
+        try {
+            String[] commissionerateArray = Constant.COMMISSIONERATE_ARRAY;
+            //Arrays.sort(category_arr);
+
+            // setup the alert builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
+
+            builder.setSingleChoiceItems(commissionerateArray, 0, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // user checked an item
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            // add OK and Cancel buttons
+            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ListView lw = ((AlertDialog)dialog).getListView();
+                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+
+                    commissionerateTextView.setText(checkedItem.toString());
+                    divisionTextView.setText(Constant.SELECT);
+                    circleTextView.setText(Constant.SELECT);
+                    sectorTextView.setText(Constant.SELECT);
+                    brickyardTextView.setText(Constant.SELECT);
+                }
+            });
+
+            // create and show the alert dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void showDivisionList() {
+        try {
+
+            String[] brickyard_arr = (String[]) dbHelper.getDivisionNameListByCommissionerate(getApplicationContext(), commissionerateTextView.getText().toString().trim());
+            //Arrays.sort(category_arr);
+
+            // setup the alert builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
+
+            builder.setSingleChoiceItems(brickyard_arr, 0, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // user checked an item
+                }
+            });
+
+            builder.setNeutralButton("Add New", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+
+                    showDialogToAddDivision();
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            // add OK and Cancel buttons
+            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ListView lw = ((AlertDialog)dialog).getListView();
+                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+
+                    divisionTextView.setText(checkedItem.toString());
+                    circleTextView.setText(Constant.SELECT);
+                    sectorTextView.setText(Constant.SELECT);
+                    brickyardTextView.setText(Constant.SELECT);
+                }
+            });
+
+            // create and show the alert dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
+
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showDivisionList1() {
         try {
             String[] divisionArray = Constant.DIVISION_ARRAY;
             //Arrays.sort(category_arr);
@@ -800,6 +913,72 @@ public class AddRecord extends AppCompatActivity {
                         dialog.cancel();
 
                         //showBrickyardList();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        showBrickyardList();
+                    }
+                });
+            }
+
+            // create an alert dialog
+            AlertDialog dialog = alertDialogBuilder.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showDialogToAddDivision(){
+        try {
+
+            String commissionerateVal = commissionerateTextView.getText().toString();
+
+            LayoutInflater layoutInflater = LayoutInflater.from(AddRecord.this);
+            View promptView = layoutInflater.inflate(R.layout.new_division_entry_prompt, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+            alertDialogBuilder.setView(promptView);
+
+            TextView commissionerate = (TextView) promptView.findViewById(R.id.commissionerateTextView);
+
+            final EditText input = (EditText) promptView.findViewById(R.id.name);
+
+            if(commissionerateVal.equals("") || commissionerateVal.equals(Constant.SELECT)) {
+
+                input.setText("Please Select Commissionerate");
+
+                alertDialogBuilder.setCancelable(false).setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+            } else {
+
+                commissionerate.setText(commissionerateVal);
+
+                // setup a dialog window
+                alertDialogBuilder.setCancelable(false).setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String newName = input.getText().toString().trim();
+                        newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
+
+                        if (newName.length() > 0) {
+                            String existingName = dbHelper.getDivisionNameByCommissionerate(getApplicationContext(), commissionerateVal);
+                            if (existingName == null || existingName.equalsIgnoreCase("")) {
+                                dbHelper.saveDivision(getApplicationContext(), new DivisionBean(newName, commissionerateVal));
+                            } else {
+                                newName = existingName;
+                            }
+                        }
+
+                        divisionTextView.setText(newName);
+                        dialog.cancel();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

@@ -21,6 +21,7 @@ import java.util.Map;
 
 import brickyard.tracker.bean.BrickyardBean;
 import brickyard.tracker.bean.CategoryBean;
+import brickyard.tracker.bean.DivisionBean;
 import brickyard.tracker.bean.RecordBean;
 import brickyard.tracker.bean.UserProfileBean;
 
@@ -33,6 +34,10 @@ public class DbHelper extends SQLiteOpenHelper {
     public final String TBL_APP_USER_PROFILE = "tbl_app_user_profile";
     public final String TBL_CATEGORY = "tbl_category";
 
+    public final String TBL_COMMISSIONERATE = "tbl_commissionerate";
+    public final String TBL_DIVISION = "tbl_division";
+    public final String TBL_CIRCLE = "tbl_circle";
+    public final String TBL_SECTOR = "tbl_sector";
     public final String TBL_BRICKYARD = "tbl_brickyard";
     public final String TBL_RECORD = "tbl_record";
 
@@ -56,7 +61,13 @@ public class DbHelper extends SQLiteOpenHelper {
     public final String COL_COUNTRY = "country";
     public final String COL_SIGNEDOUT = "signedout";
 
+    public final String COL_COMMISSIONERATE_NAME = "commissionerate_name";
+    public final String COL_DIVISION_NAME = "division_name";
+    public final String COL_CIRCLE_NAME = "circle_name";
+    public final String COL_SECTOR_NAME = "sector_name";
+
     public final String COL_BRICKYARD_NAME = "brickyard_name";
+    public final String COL_BRICKYARD_TRADE_MARK = "brickyard_trade_mark";
     public final String COL_BRICKYARD_ADDRESS = "brickyard_address";
     public final String COL_BRICKYARD_AREA = "brickyard_area";
     public final String COL_BRICKYARD_TYPE = "brickyard_type";
@@ -72,10 +83,6 @@ public class DbHelper extends SQLiteOpenHelper {
     public final String COL_TOTAL_PAID_AMOUNT = "total_paid_amount";
     public final String COL_CURRENT_DUE_AMOUNT = "current_due_amount";
 
-    public final String COL_DIVISION = "division_name";
-    public final String COL_CIRCLE = "circle_name";
-    public final String COL_SECTOR = "sector_name";
-
     private final String SQL_CREATE_TBL_USER_PROFILE =
             "CREATE TABLE " + TBL_APP_USER_PROFILE + " (" +
                     COL_ID + " INTEGER," +
@@ -88,14 +95,34 @@ public class DbHelper extends SQLiteOpenHelper {
                     COL_CURRENCY + " TEXT," +
                     COL_SIGNEDOUT + " TEXT)";
 
+    private final String SQL_CREATE_TBL_COMMISSIONERATE =
+            "CREATE TABLE " + TBL_COMMISSIONERATE + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT)";
+
+    private final String SQL_CREATE_TBL_DIVISION =
+            "CREATE TABLE " + TBL_DIVISION + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT)";
+
+    private final String SQL_CREATE_TBL_CIRCLE =
+            "CREATE TABLE " + TBL_CIRCLE + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT, " + COL_DIVISION_NAME + " TEXT)";
+
+    private final String SQL_CREATE_TBL_SECTOR =
+            "CREATE TABLE " + TBL_SECTOR + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT)";
+
+    private final String SQL_CREATE_TBL_CATEGORY =
+            "CREATE TABLE " + TBL_CATEGORY + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_TYPE + " INTEGER," + COL_NAME + " TEXT)";
+
+    private final String SQL_CREATE_TBL_BRICKYARD =
+            "CREATE TABLE " + TBL_BRICKYARD + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT," + COL_SECTOR_NAME + " TEXT)";
+
     private final String SQL_CREATE_TBL_RECORD =
            "CREATE TABLE " + TBL_RECORD + " (" +
                    COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                    COL_DATE + " LONG," +
-                   COL_DIVISION + " TEXT," +
-                   COL_CIRCLE + " TEXT," +
-                   COL_SECTOR + " TEXT," +
+                   COL_COMMISSIONERATE_NAME + " TEXT," +
+                   COL_DIVISION_NAME + " TEXT," +
+                   COL_CIRCLE_NAME + " TEXT," +
+                   COL_SECTOR_NAME + " TEXT," +
                    COL_BRICKYARD_NAME + " TEXT," +
+                   COL_BRICKYARD_TRADE_MARK + " TEXT," +
                    COL_BRICKYARD_ADDRESS + " TEXT," +
                    COL_BRICKYARD_AREA + " TEXT," +
                    COL_BRICKYARD_TYPE + " TEXT," +
@@ -110,22 +137,6 @@ public class DbHelper extends SQLiteOpenHelper {
                    COL_CURRENT_DUE_AMOUNT + " TEXT," +
                    COL_NOTE + " TEXT)";
 
-    private final String SQL_CREATE_TBL_CATEGORY =
-            "CREATE TABLE " + TBL_CATEGORY + " (" +
-                    COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COL_TYPE + " INTEGER," +
-                    COL_NAME + " TEXT)";
-
-    /*private final String SQL_CREATE_TBL_BRICKYARD =
-            "CREATE TABLE " + TBL_BRICKYARD + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT)";*/
-
-    private final String SQL_CREATE_TBL_BRICKYARD =
-            "CREATE TABLE " + TBL_BRICKYARD + " (" +
-                    COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COL_NAME + " TEXT," +
-                    COL_DIVISION + " TEXT," +
-                    COL_CIRCLE + " TEXT," +
-                    COL_SECTOR + " TEXT)";
 
     private final String SQL_QUERY_INSERT_DEFAULT_USER_PROFILE =
             "INSERT INTO " + TBL_APP_USER_PROFILE + " (id, name, email, password, enablePassProtection, country, language, currency, signedout) VALUES (1, '', '', '', '0', '', '', '', '1')";
@@ -141,6 +152,18 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS "+TBL_CATEGORY);
         db.execSQL(SQL_CREATE_TBL_CATEGORY);
+
+        db.execSQL("DROP TABLE IF EXISTS "+TBL_COMMISSIONERATE);
+        db.execSQL(SQL_CREATE_TBL_COMMISSIONERATE);
+
+        db.execSQL("DROP TABLE IF EXISTS "+TBL_DIVISION);
+        db.execSQL(SQL_CREATE_TBL_DIVISION);
+
+        db.execSQL("DROP TABLE IF EXISTS "+TBL_CIRCLE);
+        db.execSQL(SQL_CREATE_TBL_CIRCLE);
+
+        db.execSQL("DROP TABLE IF EXISTS "+TBL_SECTOR);
+        db.execSQL(SQL_CREATE_TBL_SECTOR);
 
         db.execSQL("DROP TABLE IF EXISTS "+TBL_RECORD);
         db.execSQL(SQL_CREATE_TBL_RECORD);
@@ -195,9 +218,9 @@ public class DbHelper extends SQLiteOpenHelper {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(COL_DATE, recordBean.getLongDate());
-        values.put(COL_DIVISION, recordBean.getDivision());
-        values.put(COL_CIRCLE, recordBean.getCircle());
-        values.put(COL_SECTOR, recordBean.getSector());
+        values.put(COL_DIVISION_NAME, recordBean.getDivision());
+        values.put(COL_CIRCLE_NAME, recordBean.getCircle());
+        values.put(COL_SECTOR_NAME, recordBean.getSector());
         values.put(COL_BRICKYARD_NAME, recordBean.getBrickyardName());
         values.put(COL_BRICKYARD_ADDRESS, recordBean.getAddress());
         values.put(COL_BRICKYARD_AREA, recordBean.getArea());
@@ -985,12 +1008,74 @@ public class DbHelper extends SQLiteOpenHelper {
         return recordList;
     }
 
+    //----DIVISION----------------------------------------------------------------------
+    public String[] getDivisionNameListByCommissionerate(Context context, String commissionerate_name) {
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_DIVISION+ " WHERE " +COL_COMMISSIONERATE_NAME+ " = '" +commissionerate_name+ "' ORDER BY "+COL_NAME+" ASC";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        List<String> nameList = new ArrayList<>();
+        try {
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(0);
+                nameList.add(name);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        String[] nameArray = new String[nameList.size()];
+        return nameList.toArray(nameArray);
+
+    }
+
+    public String getDivisionNameByCommissionerate(Context context, String commissionerate_name) {
+        String name = "";
+
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_DIVISION+ " WHERE "+COL_COMMISSIONERATE_NAME+" = '" + commissionerate_name +"'";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                name = cursor.getString(0);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        return name;
+    }
+
+    public long saveDivision(Context context, DivisionBean division){
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, division.getName());
+        values.put(COL_DIVISION_NAME, division.getCommissionerate());
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(TBL_DIVISION, null, values);
+
+        mDbHelper.close();
+
+        return newRowId;
+    }
+
     //----BRICKYARD----------------------------------------------------------------------
     public List<BrickyardBean> getAllBrickYardList(Context context, int limit) {
         DbHelper mDbHelper = new DbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_DIVISION+", "+COL_CIRCLE+", "+COL_SECTOR+" FROM " +TBL_BRICKYARD+
+        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "+COL_SECTOR_NAME+" FROM " +TBL_BRICKYARD+
                 " ORDER BY "+COL_NAME+" ASC LIMIT "+limit;
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
@@ -1017,8 +1102,8 @@ public class DbHelper extends SQLiteOpenHelper {
         DbHelper mDbHelper = new DbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_DIVISION+", "+COL_CIRCLE+", "+COL_SECTOR+" FROM " +TBL_BRICKYARD+
-                " WHERE " +COL_DIVISION+ " = '" +division_name+ "' AND " +COL_CIRCLE+ " = '" +circle_name+ "' AND " +COL_SECTOR+ " = '" +sector_name+ "'" +
+        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "+COL_SECTOR_NAME+" FROM " +TBL_BRICKYARD+
+                " WHERE " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
                 " ORDER BY "+COL_NAME+" ASC";
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
@@ -1046,7 +1131,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_BRICKYARD+
-                " WHERE " +COL_DIVISION+ " = '" +division_name+ "' AND " +COL_CIRCLE+ " = '" +circle_name+ "' AND " +COL_SECTOR+ " = '" +sector_name+ "'" +
+                " WHERE " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
                 " ORDER BY "+COL_NAME+" ASC";
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
@@ -1073,7 +1158,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_BRICKYARD+ " WHERE "+COL_DIVISION+" = '" + division + "' AND "+COL_CIRCLE+" = '"+circle+"' AND "+COL_SECTOR+" = '"+sector+"'";
+        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_BRICKYARD+ " WHERE "+COL_DIVISION_NAME+" = '" + division + "' AND "+COL_CIRCLE_NAME+" = '"+circle+"' AND "+COL_SECTOR_NAME+" = '"+sector+"'";
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
         try {
@@ -1094,9 +1179,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COL_NAME, brickyard.getName());
-        values.put(COL_DIVISION, brickyard.getDivision());
-        values.put(COL_CIRCLE, brickyard.getCircle());
-        values.put(COL_SECTOR, brickyard.getSector());
+        values.put(COL_DIVISION_NAME, brickyard.getDivision());
+        values.put(COL_CIRCLE_NAME, brickyard.getCircle());
+        values.put(COL_SECTOR_NAME, brickyard.getSector());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(TBL_BRICKYARD, null, values);
