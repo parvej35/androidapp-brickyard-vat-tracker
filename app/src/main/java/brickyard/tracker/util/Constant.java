@@ -45,8 +45,8 @@ public class Constant {
 
     public static final String[] TYPE_SELECTOR = {"Both (Income and Expense)", "Income", "Expense" };
 
-    public static final String[] BRICKYARD_AREA_ARRAY = {"Area 1", "Area 2", "Area 3"};
-    public static final String[] BRICKYARD_BRICK_TYPE = {"Brick Type 1", "Brick Type 2"};
+    public static final String[] BRICKYARD_AREA_ARRAY = {"Volume 1", "Volume 2", "Volume 3"};
+    public static final String[] BRICKYARD_BRICK_TYPE = {"Bangla Brick", "2 Pore", "3 Pore", "4 Pore", "6 Pore", "8 Pore", "10 Pore"};
     public static final String[] BRICKYARD_STATUS_TYPE = {"Active", "Inactive"};
 
     public static final String[] DEFAULT_INC_CATEGORY = {

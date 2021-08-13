@@ -21,15 +21,17 @@ import java.util.Map;
 
 import brickyard.tracker.bean.BrickyardBean;
 import brickyard.tracker.bean.CategoryBean;
+import brickyard.tracker.bean.CircleBean;
 import brickyard.tracker.bean.DivisionBean;
 import brickyard.tracker.bean.RecordBean;
+import brickyard.tracker.bean.SectorBean;
 import brickyard.tracker.bean.UserProfileBean;
 
 public class DbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "brickyard_vat_tracker.db";
+    public static final String DATABASE_NAME = "brickyard_vat_tracker_test.db";
 
     public final String TBL_APP_USER_PROFILE = "tbl_app_user_profile";
     public final String TBL_CATEGORY = "tbl_category";
@@ -180,12 +182,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TBL_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS "+TBL_BRICKYARD);
-
-        db.execSQL("DROP TABLE IF EXISTS "+TBL_RECORD);
-        db.execSQL("DROP TABLE IF EXISTS "+TBL_APP_USER_PROFILE);
-
         onCreate(db);
     }
 
@@ -1032,26 +1028,26 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    public String getDivisionNameByCommissionerate(Context context, String commissionerate_name) {
-        String name = "";
+    public int countDivisionByNameAndCommissionerate(Context context, String newName, String commissionerate_name) {
+        int total = 0;
 
         DbHelper mDbHelper = new DbHelper(context);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_DIVISION+ " WHERE "+COL_COMMISSIONERATE_NAME+" = '" + commissionerate_name +"'";
+        String STR_QUERY = "SELECT COUNT("+COL_NAME+") FROM " +TBL_DIVISION+ " WHERE UPPER("+COL_NAME+") = UPPER('"+newName+"') AND UPPER("+COL_COMMISSIONERATE_NAME+") = UPPER('"+commissionerate_name+"')";
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
         try {
             while (cursor.moveToNext()) {
-                name = cursor.getString(0);
+                total = cursor.getInt(0);
             }
         } finally {
             cursor.close();
             mDbHelper.close();
         }
 
-        return name;
+        return total;
     }
 
     public long saveDivision(Context context, DivisionBean division){
@@ -1060,10 +1056,137 @@ public class DbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COL_NAME, division.getName());
-        values.put(COL_DIVISION_NAME, division.getCommissionerate());
+        values.put(COL_COMMISSIONERATE_NAME, division.getCommissionerate());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(TBL_DIVISION, null, values);
+
+        mDbHelper.close();
+
+        return newRowId;
+    }
+
+    //----CIRCLE----------------------------------------------------------------------
+    public String[] getCircleNameListByDivision(Context context, String division_name) {
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_CIRCLE+ " WHERE UPPER("+COL_DIVISION_NAME+") = UPPER('"+division_name+"') ORDER BY "+COL_NAME+" ASC";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        List<String> nameList = new ArrayList<>();
+        try {
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(0);
+                nameList.add(name);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        String[] nameArray = new String[nameList.size()];
+        return nameList.toArray(nameArray);
+
+    }
+
+    public int countCircleByNameAndDivision(Context context, String newName, String division_name) {
+        int total = 0;
+
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT COUNT("+COL_NAME+") FROM " +TBL_CIRCLE+ " WHERE UPPER("+COL_NAME+") = UPPER('"+newName+"') AND UPPER("+COL_DIVISION_NAME+") = UPPER('"+division_name+"')";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                total = cursor.getInt(0);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        return total;
+    }
+
+    public long saveCircle(Context context, CircleBean circle){
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, circle.getName());
+        values.put(COL_COMMISSIONERATE_NAME, circle.getCommissionerate());
+        values.put(COL_DIVISION_NAME, circle.getDivision());
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(TBL_CIRCLE, null, values);
+
+        mDbHelper.close();
+
+        return newRowId;
+    }
+
+    //----SECTOR----------------------------------------------------------------------
+    public String[] getSectorNameListByCircle(Context context, String circle_name) {
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_SECTOR+ " WHERE UPPER("+COL_CIRCLE_NAME+") = UPPER('"+circle_name+"') ORDER BY "+COL_NAME+" ASC";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        List<String> nameList = new ArrayList<>();
+        try {
+            while (cursor.moveToNext()) {
+                String name = cursor.getString(0);
+                nameList.add(name);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        String[] nameArray = new String[nameList.size()];
+        return nameList.toArray(nameArray);
+
+    }
+
+    public int countSectorByNameAndCircle(Context context, String newName, String circle_name) {
+        int total = 0;
+
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT COUNT("+COL_NAME+") FROM " +TBL_SECTOR+ " WHERE UPPER("+COL_NAME+") = UPPER('"+newName+"') AND UPPER("+COL_CIRCLE_NAME+") = UPPER('"+circle_name+"')";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                total = cursor.getInt(0);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        return total;
+    }
+
+    public long saveSector(Context context, SectorBean sector){
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, sector.getName());
+        values.put(COL_COMMISSIONERATE_NAME, sector.getCommissionerate());
+        values.put(COL_DIVISION_NAME, sector.getDivision());
+        values.put(COL_CIRCLE_NAME, sector.getCircle());
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = db.insert(TBL_SECTOR, null, values);
 
         mDbHelper.close();
 

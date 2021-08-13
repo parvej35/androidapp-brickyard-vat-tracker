@@ -23,8 +23,10 @@ import java.util.Date;
 import java.util.List;
 
 import brickyard.tracker.bean.BrickyardBean;
+import brickyard.tracker.bean.CircleBean;
 import brickyard.tracker.bean.DivisionBean;
 import brickyard.tracker.bean.RecordBean;
+import brickyard.tracker.bean.SectorBean;
 import brickyard.tracker.util.Constant;
 import brickyard.tracker.util.DbHelper;
 
@@ -438,13 +440,13 @@ public class AddRecord extends AppCompatActivity {
     private void showDivisionList() {
         try {
 
-            String[] brickyard_arr = (String[]) dbHelper.getDivisionNameListByCommissionerate(getApplicationContext(), commissionerateTextView.getText().toString().trim());
+            String[] division_arr = (String[]) dbHelper.getDivisionNameListByCommissionerate(getApplicationContext(), commissionerateTextView.getText().toString().trim());
             //Arrays.sort(category_arr);
 
             // setup the alert builder
             AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
 
-            builder.setSingleChoiceItems(brickyard_arr, 0, new DialogInterface.OnClickListener() {
+            builder.setSingleChoiceItems(division_arr, 0, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // user checked an item
@@ -540,23 +542,22 @@ public class AddRecord extends AppCompatActivity {
     private void showCircleList() {
         try {
 
-            String[] circleArray = Constant.populateCircleListByDivision(divisionTextView.getText().toString().trim());
+            String[] circle_arr = (String[]) dbHelper.getCircleNameListByDivision(getApplicationContext(), divisionTextView.getText().toString().trim());
+            //Arrays.sort(category_arr);
 
             // setup the alert builder
             AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
 
-            builder.setSingleChoiceItems(circleArray, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // user checked an item
+            builder.setSingleChoiceItems(circle_arr, 0, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { }});
+
+            builder.setNeutralButton("Add New", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    showDialogToAddCircle();
                 }
             });
 
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
             // add OK and Cancel buttons
             builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
@@ -576,6 +577,7 @@ public class AddRecord extends AppCompatActivity {
             dialog.show();
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
 
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -585,23 +587,22 @@ public class AddRecord extends AppCompatActivity {
     private void showSectorList() {
         try {
 
-            String[] sectorArray = Constant.populateSectorListByCircle(circleTextView.getText().toString().trim());
+            String[] sector_arr = (String[]) dbHelper.getSectorNameListByCircle(getApplicationContext(), circleTextView.getText().toString().trim());
+            //Arrays.sort(category_arr);
 
             // setup the alert builder
             AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
 
-            builder.setSingleChoiceItems(sectorArray, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // user checked an item
+            builder.setSingleChoiceItems(sector_arr, 0, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { }});
+
+            builder.setNeutralButton("Add New", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    showDialogToAddSector();
                 }
             });
 
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
             // add OK and Cancel buttons
             builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
@@ -620,6 +621,7 @@ public class AddRecord extends AppCompatActivity {
             dialog.show();
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
 
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -969,21 +971,162 @@ public class AddRecord extends AppCompatActivity {
                         newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
                         if (newName.length() > 0) {
-                            String existingName = dbHelper.getDivisionNameByCommissionerate(getApplicationContext(), commissionerateVal);
-                            if (existingName == null || existingName.equalsIgnoreCase("")) {
+                            int countExisting = dbHelper.countDivisionByNameAndCommissionerate(getApplicationContext(), newName, commissionerateVal);
+                            if (countExisting == 0) {
                                 dbHelper.saveDivision(getApplicationContext(), new DivisionBean(newName, commissionerateVal));
-                            } else {
-                                newName = existingName;
                             }
+
+                            divisionTextView.setText(newName);
                         }
 
-                        divisionTextView.setText(newName);
                         dialog.cancel();
+                        //showDivisionList();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        showBrickyardList();
+                        showDivisionList();
+                    }
+                });
+            }
+
+            // create an alert dialog
+            AlertDialog dialog = alertDialogBuilder.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showDialogToAddCircle(){
+        try {
+
+            String commissionerateVal = commissionerateTextView.getText().toString();
+            String divisionVal = divisionTextView.getText().toString();
+
+            LayoutInflater layoutInflater = LayoutInflater.from(AddRecord.this);
+            View promptView = layoutInflater.inflate(R.layout.new_circle_entry_prompt, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+            alertDialogBuilder.setView(promptView);
+
+            TextView commissionerate = (TextView) promptView.findViewById(R.id.commissionerateTextView);
+            TextView division = (TextView) promptView.findViewById(R.id.divisionTextView);
+
+            final EditText input = (EditText) promptView.findViewById(R.id.name);
+
+            if(divisionVal.equals("") || divisionVal.equals(Constant.SELECT)) {
+
+                input.setText("Please Select Division");
+
+                alertDialogBuilder.setCancelable(false).setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+            } else {
+
+                commissionerate.setText(commissionerateVal);
+                division.setText(divisionVal);
+
+                // setup a dialog window
+                alertDialogBuilder.setCancelable(false).setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String newName = input.getText().toString().trim();
+                        newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
+
+                        if (newName.length() > 0) {
+                            int countExisting = dbHelper.countCircleByNameAndDivision(getApplicationContext(), newName, divisionVal);
+                            if (countExisting == 0) {
+                                dbHelper.saveCircle(getApplicationContext(), new CircleBean(newName, commissionerateVal, divisionVal));
+                            }
+
+                            circleTextView.setText(newName);
+                        }
+
+                        dialog.cancel();
+                        //showDivisionList();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        showCircleList();
+                    }
+                });
+            }
+
+            // create an alert dialog
+            AlertDialog dialog = alertDialogBuilder.create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showDialogToAddSector(){
+        try {
+
+            String commissionerateVal = commissionerateTextView.getText().toString();
+            String divisionVal = divisionTextView.getText().toString();
+            String circleVal = circleTextView.getText().toString();
+
+            LayoutInflater layoutInflater = LayoutInflater.from(AddRecord.this);
+            View promptView = layoutInflater.inflate(R.layout.new_sector_entry_prompt, null);
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+            alertDialogBuilder.setView(promptView);
+
+            TextView commissionerate = (TextView) promptView.findViewById(R.id.commissionerateTextView);
+            TextView division = (TextView) promptView.findViewById(R.id.divisionTextView);
+            TextView circle = (TextView) promptView.findViewById(R.id.circleTextView);
+
+            final EditText input = (EditText) promptView.findViewById(R.id.name);
+
+            if(circleVal.equals("") || circleVal.equals(Constant.SELECT)) {
+
+                input.setText("Please Select Circle");
+
+                alertDialogBuilder.setCancelable(false).setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+            } else {
+
+                commissionerate.setText(commissionerateVal);
+                division.setText(divisionVal);
+                circle.setText(circleVal);
+
+                // setup a dialog window
+                alertDialogBuilder.setCancelable(false).setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String newName = input.getText().toString().trim();
+                        newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
+
+                        if (newName.length() > 0) {
+                            int countExisting = dbHelper.countSectorByNameAndCircle(getApplicationContext(), newName, circleVal);
+                            if (countExisting == 0) {
+                                dbHelper.saveSector(getApplicationContext(), new SectorBean(newName, commissionerateVal, divisionVal, circleVal));
+                            }
+
+                            sectorTextView.setText(newName);
+                        }
+
+                        dialog.cancel();
+                        //showDivisionList();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        showSectorList();
                     }
                 });
             }
