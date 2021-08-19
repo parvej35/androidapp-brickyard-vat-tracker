@@ -31,7 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "brickyard_vat_tracker_test.db";
+    public static final String DATABASE_NAME = "brickyard_vat_tracker_test_2.db";
 
     public final String TBL_APP_USER_PROFILE = "tbl_app_user_profile";
     public final String TBL_CATEGORY = "tbl_category";
@@ -45,6 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public final String COL_ID = "id";
     public final String COL_NAME = "name";
+    public final String COL_ADDRESS = "address";
     public final String COL_EMAIL = "email";
     public final String COL_PASSWORD = "password";
     public final String COL_ENABLED_PASSWORD_PROTECTION = "enablePassProtection";
@@ -104,7 +105,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TBL_DIVISION + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT)";
 
     private final String SQL_CREATE_TBL_CIRCLE =
-            "CREATE TABLE " + TBL_CIRCLE + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT, " + COL_DIVISION_NAME + " TEXT)";
+            "CREATE TABLE " + TBL_CIRCLE + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT)";
 
     private final String SQL_CREATE_TBL_SECTOR =
             "CREATE TABLE " + TBL_SECTOR + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT)";
@@ -113,7 +114,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TBL_CATEGORY + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_TYPE + " INTEGER," + COL_NAME + " TEXT)";
 
     private final String SQL_CREATE_TBL_BRICKYARD =
-            "CREATE TABLE " + TBL_BRICKYARD + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT," + COL_SECTOR_NAME + " TEXT)";
+            "CREATE TABLE " + TBL_BRICKYARD + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_ADDRESS + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT," + COL_SECTOR_NAME + " TEXT, "+COL_BRICKYARD_AREA+" TEXT, "+COL_BRICKYARD_TYPE+" TEXT, "+COL_BRICKYARD_STATUS+" TEXT)";
 
     private final String SQL_CREATE_TBL_RECORD =
            "CREATE TABLE " + TBL_RECORD + " (" +
@@ -186,9 +187,7 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
-    }
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) { onUpgrade(db, oldVersion, newVersion); }
 
     public void truncateAllTransactionRecordAndCategoryInfo(Context context) {
         DbHelper mDbHelper = new DbHelper(context);
@@ -1198,8 +1197,11 @@ public class DbHelper extends SQLiteOpenHelper {
         DbHelper mDbHelper = new DbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "+COL_SECTOR_NAME+" FROM " +TBL_BRICKYARD+
-                " ORDER BY "+COL_NAME+" ASC LIMIT "+limit;
+        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
+                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+
+                            " FROM " +TBL_BRICKYARD+
+                            " ORDER BY "+COL_NAME+" ASC LIMIT "+limit;
+
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
         List<BrickyardBean> brickyardBeanList = new ArrayList<>();
@@ -1207,11 +1209,16 @@ public class DbHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                String division = cursor.getString(2);
-                String circle = cursor.getString(3);
-                String sector = cursor.getString(4);
+                String address = cursor.getString(2);
+                String commissionerate = cursor.getString(3);
+                String division = cursor.getString(4);
+                String circle = cursor.getString(5);
+                String sector = cursor.getString(6);
+                String area = cursor.getString(7);
+                String type = cursor.getString(8);
+                String status = cursor.getString(9);
 
-                brickyardBeanList.add(new BrickyardBean(id, name, division, circle, sector));
+                brickyardBeanList.add(new BrickyardBean(id, name, address, commissionerate, division, circle, sector, area, type, status));
             }
         } finally {
             cursor.close();
@@ -1225,9 +1232,11 @@ public class DbHelper extends SQLiteOpenHelper {
         DbHelper mDbHelper = new DbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "+COL_SECTOR_NAME+" FROM " +TBL_BRICKYARD+
-                " WHERE " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
-                " ORDER BY "+COL_NAME+" ASC";
+        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
+                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+
+                            " FROM " +TBL_BRICKYARD+
+                            " WHERE " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
+                            " ORDER BY "+COL_NAME+" ASC";
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
         List<BrickyardBean> brickyardBeanList = new ArrayList<>();
@@ -1235,11 +1244,16 @@ public class DbHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                String division = cursor.getString(2);
-                String circle = cursor.getString(3);
-                String sector = cursor.getString(4);
+                String address = cursor.getString(2);
+                String commissionerate = cursor.getString(3);
+                String division = cursor.getString(4);
+                String circle = cursor.getString(5);
+                String sector = cursor.getString(6);
+                String area = cursor.getString(7);
+                String type = cursor.getString(8);
+                String status = cursor.getString(9);
 
-                brickyardBeanList.add(new BrickyardBean(id, name, division, circle, sector));
+                brickyardBeanList.add(new BrickyardBean(id, name, address, commissionerate, division, circle, sector, area, type, status));
             }
         } finally {
             cursor.close();
@@ -1249,12 +1263,12 @@ public class DbHelper extends SQLiteOpenHelper {
         return brickyardBeanList;
     }
 
-    public String[] getBrickYardNameListByDivisionCircleSector(Context context, String division_name, String circle_name, String sector_name) {
+    public String[] getBrickYardNameListByCommissionerateDivisionCircleSector(Context context, String commissionerate_name, String division_name, String circle_name, String sector_name) {
         DbHelper mDbHelper = new DbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_BRICKYARD+
-                " WHERE " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
+                " WHERE "+COL_COMMISSIONERATE_NAME+" = '"+commissionerate_name+"' AND " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
                 " ORDER BY "+COL_NAME+" ASC";
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
@@ -1274,26 +1288,88 @@ public class DbHelper extends SQLiteOpenHelper {
 
     }
 
-    public String getBrickyardNameByDivisionAndCircleAndSector(Context context, String division, String circle, String sector) {
-        String name = "";
+    public int countBrickyardNameByCommissionerateAndDivisionAndCircleAndSector(Context context, String name, String commissionerate_name, String division, String circle, String sector) {
+        int total = 0;
 
         DbHelper mDbHelper = new DbHelper(context);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String STR_QUERY = "SELECT "+COL_NAME+" FROM " +TBL_BRICKYARD+ " WHERE "+COL_DIVISION_NAME+" = '" + division + "' AND "+COL_CIRCLE_NAME+" = '"+circle+"' AND "+COL_SECTOR_NAME+" = '"+sector+"'";
+        String STR_QUERY = "SELECT COUNT("+COL_NAME+") FROM " +TBL_BRICKYARD+
+                " WHERE UPPER("+COL_NAME+") = UPPER('"+name+"') AND UPPER("+COL_COMMISSIONERATE_NAME+") = UPPER('"+commissionerate_name+"') " +
+                " AND UPPER("+COL_DIVISION_NAME+") = UPPER('"+division+"') AND UPPER("+COL_CIRCLE_NAME+") = UPPER('"+circle+"') " +
+                " AND UPPER("+COL_SECTOR_NAME+") = UPPER('"+sector+"')";
+
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
         try {
             while (cursor.moveToNext()) {
-                name = cursor.getString(0);
+                total = cursor.getInt(0);
             }
         } finally {
             cursor.close();
             mDbHelper.close();
         }
 
-        return name;
+        return total;
+    }
+
+    public BrickyardBean getBrickYardBeanByNameAndCommissionerateAndDivisionAndCircleAndSector(Context context, String brickyard_name, String commissionerate_name, String division_name, String circle_name, String sector_name) {
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
+                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+
+                            " FROM " +TBL_BRICKYARD+
+                            " WHERE "+COL_NAME+" = '"+brickyard_name+"' AND " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '"
+                                     +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'";
+
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        BrickyardBean brickyardBean = null;
+        try {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                String name = cursor.getString(1);
+                String address = cursor.getString(2);
+                String commissionerate = cursor.getString(3);
+                String division = cursor.getString(4);
+                String circle = cursor.getString(5);
+                String sector = cursor.getString(6);
+                String area = cursor.getString(7);
+                String type = cursor.getString(8);
+                String status = cursor.getString(9);
+
+                brickyardBean = new BrickyardBean(id, name, address, commissionerate, division, circle, sector, area, type, status);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        return brickyardBean;
+    }
+
+    public String getBrickyardAddressByNameAndCommissionerateAndDivisionAndCircleAndSector(Context context, String name, String commissionerate_name, String division, String circle, String sector) {
+        String address = "";
+
+        DbHelper mDbHelper = new DbHelper(context);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_ADDRESS+" FROM " +TBL_BRICKYARD+ " WHERE "+COL_NAME+" = '"+name+"' AND "+COL_COMMISSIONERATE_NAME+" = '"+commissionerate_name+"' AND "+COL_DIVISION_NAME+" = '" + division + "' AND "+COL_CIRCLE_NAME+" = '"+circle+"' AND "+COL_SECTOR_NAME+" = '"+sector+"'";
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                address = cursor.getString(0);
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        return address;
     }
 
     public long saveBrickyard(Context context, BrickyardBean brickyard){
@@ -1302,6 +1378,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(COL_NAME, brickyard.getName());
+        values.put(COL_ADDRESS, brickyard.getAddress());
+        values.put(COL_COMMISSIONERATE_NAME, brickyard.getCommissionerate());
         values.put(COL_DIVISION_NAME, brickyard.getDivision());
         values.put(COL_CIRCLE_NAME, brickyard.getCircle());
         values.put(COL_SECTOR_NAME, brickyard.getSector());

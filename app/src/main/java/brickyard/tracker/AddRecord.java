@@ -423,6 +423,7 @@ public class AddRecord extends AppCompatActivity {
                     circleTextView.setText(Constant.SELECT);
                     sectorTextView.setText(Constant.SELECT);
                     brickyardTextView.setText(Constant.SELECT);
+                    addressTextView.setText("");
                 }
             });
 
@@ -478,6 +479,7 @@ public class AddRecord extends AppCompatActivity {
                     circleTextView.setText(Constant.SELECT);
                     sectorTextView.setText(Constant.SELECT);
                     brickyardTextView.setText(Constant.SELECT);
+                    addressTextView.setText("");
                 }
             });
 
@@ -487,52 +489,6 @@ public class AddRecord extends AppCompatActivity {
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
             dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
-
-        } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void showDivisionList1() {
-        try {
-            String[] divisionArray = Constant.DIVISION_ARRAY;
-            //Arrays.sort(category_arr);
-
-            // setup the alert builder
-            AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
-
-            builder.setSingleChoiceItems(divisionArray, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // user checked an item
-                }
-            });
-
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
-
-                    divisionTextView.setText(checkedItem.toString());
-                    circleTextView.setText(Constant.SELECT);
-                    sectorTextView.setText(Constant.SELECT);
-                    brickyardTextView.setText(Constant.SELECT);
-                }
-            });
-
-            // create and show the alert dialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
 
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -569,6 +525,7 @@ public class AddRecord extends AppCompatActivity {
                     circleTextView.setText(checkedItem.toString());
                     sectorTextView.setText(Constant.SELECT);
                     brickyardTextView.setText(Constant.SELECT);
+                    addressTextView.setText("");
                 }
             });
 
@@ -613,6 +570,7 @@ public class AddRecord extends AppCompatActivity {
 
                     sectorTextView.setText(checkedItem.toString());
                     brickyardTextView.setText(Constant.SELECT);
+                    addressTextView.setText("");
                 }
             });
 
@@ -807,22 +765,18 @@ public class AddRecord extends AppCompatActivity {
 
     private void showBrickyardList() {
         try {
+            String commissionerate = commissionerateTextView.getText().toString().trim();
             String division = divisionTextView.getText().toString().trim();
             String circle = circleTextView.getText().toString().trim();
             String sector = sectorTextView.getText().toString().trim();
 
-            String[] brickyard_arr = (String[]) dbHelper.getBrickYardNameListByDivisionCircleSector(getApplicationContext(), division, circle, sector);
+            String[] brickyard_arr = (String[]) dbHelper.getBrickYardNameListByCommissionerateDivisionCircleSector(getApplicationContext(), commissionerate, division, circle, sector);
             //Arrays.sort(category_arr);
 
             // setup the alert builder
             AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
 
-            builder.setSingleChoiceItems(brickyard_arr, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // user checked an item
-                }
-            });
+            builder.setSingleChoiceItems(brickyard_arr, 0, new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { }});
 
             builder.setNeutralButton("Add New", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -846,6 +800,15 @@ public class AddRecord extends AppCompatActivity {
                     Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
                     brickyardTextView.setText(checkedItem.toString());
+
+                    //String address = dbHelper.getBrickyardAddressByNameAndCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector);
+                    //addressTextView.setText(address);
+
+                    BrickyardBean brickyardBean = dbHelper.getBrickYardBeanByNameAndCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector);
+                    addressTextView.setText(brickyardBean.getAddress());
+                    areaTextView.setText(brickyardBean.getArea());
+                    brickTypeTextView.setText(brickyardBean.getType());
+                    statusTextView.setText(brickyardBean.getStatus());
                 }
             });
 
@@ -864,6 +827,7 @@ public class AddRecord extends AppCompatActivity {
     private void showDialogToAddBrickyard(){
         try {
 
+            String commissionerateVal = commissionerateTextView.getText().toString();
             String divisionVal = divisionTextView.getText().toString();
             String circleVal = circleTextView.getText().toString();
             String sectorVal = sectorTextView.getText().toString();
@@ -874,15 +838,17 @@ public class AddRecord extends AppCompatActivity {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
             alertDialogBuilder.setView(promptView);
 
+            //TextView commissionerate = (TextView) promptView.findViewById(R.id.commissionerateTextView);
             TextView division = (TextView) promptView.findViewById(R.id.divisionTextView);
             TextView circle = (TextView) promptView.findViewById(R.id.circleTextView);
             TextView sector = (TextView) promptView.findViewById(R.id.sectorTextView);
 
-            final EditText input = (EditText) promptView.findViewById(R.id.name);
+            final EditText name = (EditText) promptView.findViewById(R.id.name);
+            final EditText address = (EditText) promptView.findViewById(R.id.address);
 
             if(divisionVal.equals("") || divisionVal.equals(Constant.SELECT) || circleVal.equals("") || circleVal.equals(Constant.SELECT) || sectorVal.equals("") || sectorVal.equals(Constant.SELECT)) {
 
-                input.setText("Please Select Division, Circle & Sector");
+                name.setText("Please Select Division, Circle & Sector");
 
                 alertDialogBuilder.setCancelable(false).setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -892,6 +858,7 @@ public class AddRecord extends AppCompatActivity {
 
             } else {
 
+                //commissionerate.setText(commissionerateVal);
                 division.setText(divisionVal);
                 circle.setText(circleVal);
                 sector.setText(sectorVal);
@@ -899,22 +866,25 @@ public class AddRecord extends AppCompatActivity {
                 // setup a dialog window
                 alertDialogBuilder.setCancelable(false).setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String newName = input.getText().toString().trim();
+                        String newName = name.getText().toString().trim();
                         newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
+                        String newAddress = address.getText().toString().trim();
+                        newAddress = newAddress.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
+
                         if (newName.length() > 0) {
-                            String existingName = dbHelper.getBrickyardNameByDivisionAndCircleAndSector(getApplicationContext(), divisionVal, circleVal, sectorVal);
-                            if (existingName == null || existingName.equalsIgnoreCase("")) {
-                                dbHelper.saveBrickyard(getApplicationContext(), new BrickyardBean(newName, divisionVal, circleVal, sectorVal));
-                            } else {
-                                newName = existingName;
+                            int countExisting = dbHelper.countBrickyardNameByCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), newName, commissionerateVal, divisionVal, circleVal, sectorVal);
+                            if (countExisting == 0) {
+                                dbHelper.saveBrickyard(getApplicationContext(), new BrickyardBean(newName, newAddress, commissionerateVal, divisionVal, circleVal, sectorVal, "", "", ""));
                             }
                         }
 
                         brickyardTextView.setText(newName);
+                        addressTextView.setText(newAddress);
+
                         dialog.cancel();
 
-                        //showBrickyardList();
+//                        showBrickyardList();
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
