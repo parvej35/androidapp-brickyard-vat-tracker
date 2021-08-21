@@ -31,7 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "brickyard_vat_tracker_test_2.db";
+    public static final String DATABASE_NAME = "brickyard_vat_tracker_test_7.db";
 
     public final String TBL_APP_USER_PROFILE = "tbl_app_user_profile";
     public final String TBL_CATEGORY = "tbl_category";
@@ -45,6 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public final String COL_ID = "id";
     public final String COL_NAME = "name";
+    public final String COL_TRADE_MARK = "trade_mark";
     public final String COL_ADDRESS = "address";
     public final String COL_EMAIL = "email";
     public final String COL_PASSWORD = "password";
@@ -114,7 +115,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TBL_CATEGORY + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_TYPE + " INTEGER," + COL_NAME + " TEXT)";
 
     private final String SQL_CREATE_TBL_BRICKYARD =
-            "CREATE TABLE " + TBL_BRICKYARD + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT," + COL_ADDRESS + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT," + COL_SECTOR_NAME + " TEXT, "+COL_BRICKYARD_AREA+" TEXT, "+COL_BRICKYARD_TYPE+" TEXT, "+COL_BRICKYARD_STATUS+" TEXT)";
+            "CREATE TABLE " + TBL_BRICKYARD + " (" + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COL_NAME + " TEXT, "+COL_TRADE_MARK+" TEXT, " + COL_ADDRESS + " TEXT," + COL_COMMISSIONERATE_NAME + " TEXT," + COL_DIVISION_NAME + " TEXT," + COL_CIRCLE_NAME + " TEXT," + COL_SECTOR_NAME + " TEXT, "+COL_BRICKYARD_AREA+" TEXT, "+COL_BRICKYARD_TYPE+" TEXT, "+COL_BRICKYARD_STATUS+" TEXT)";
 
     private final String SQL_CREATE_TBL_RECORD =
            "CREATE TABLE " + TBL_RECORD + " (" +
@@ -131,13 +132,13 @@ public class DbHelper extends SQLiteOpenHelper {
                    COL_BRICKYARD_TYPE + " TEXT," +
                    COL_BRICKYARD_STATUS + " TEXT," +
                    COL_FINANCIAL_YEAR + " TEXT," +
-                   COL_INSTALLMENT_1 + " TEXT," +
-                   COL_INSTALLMENT_2 + " TEXT," +
-                   COL_INSTALLMENT_3 + " TEXT," +
-                   COL_PRE_DUE_AMOUNT + " TEXT," +
-                   COL_PRE_VAT_PAID_AMOUNT + " TEXT," +
-                   COL_TOTAL_PAID_AMOUNT + " TEXT," +
-                   COL_CURRENT_DUE_AMOUNT + " TEXT," +
+                   COL_INSTALLMENT_1 + " NUMERIC," +
+                   COL_INSTALLMENT_2 + " NUMERIC," +
+                   COL_INSTALLMENT_3 + " NUMERIC," +
+                   COL_PRE_DUE_AMOUNT + " NUMERIC," +
+                   COL_PRE_VAT_PAID_AMOUNT + " NUMERIC," +
+                   COL_TOTAL_PAID_AMOUNT + " NUMERIC," +
+                   COL_CURRENT_DUE_AMOUNT + " NUMERIC," +
                    COL_NOTE + " TEXT)";
 
 
@@ -213,10 +214,12 @@ public class DbHelper extends SQLiteOpenHelper {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(COL_DATE, recordBean.getLongDate());
+        values.put(COL_COMMISSIONERATE_NAME, recordBean.getCommissionerate());
         values.put(COL_DIVISION_NAME, recordBean.getDivision());
         values.put(COL_CIRCLE_NAME, recordBean.getCircle());
         values.put(COL_SECTOR_NAME, recordBean.getSector());
         values.put(COL_BRICKYARD_NAME, recordBean.getBrickyardName());
+        values.put(COL_BRICKYARD_TRADE_MARK, recordBean.getTradeMark());
         values.put(COL_BRICKYARD_ADDRESS, recordBean.getAddress());
         values.put(COL_BRICKYARD_AREA, recordBean.getArea());
         values.put(COL_BRICKYARD_TYPE, recordBean.getBrickType());
@@ -232,11 +235,62 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(COL_NOTE, recordBean.getNote());
 
         // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(TBL_RECORD, null, values);
+        long newRowId = db.insert(TBL_RECORD, "", values);
 
         mDbHelper.close();
 
         return newRowId;
+    }
+
+    public int updateRecord(Context context, RecordBean recordBean){
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(COL_DATE, recordBean.getLongDate());
+        values.put(COL_COMMISSIONERATE_NAME, recordBean.getCommissionerate());
+        values.put(COL_DIVISION_NAME, recordBean.getDivision());
+        values.put(COL_CIRCLE_NAME, recordBean.getCircle());
+        values.put(COL_SECTOR_NAME, recordBean.getSector());
+        values.put(COL_BRICKYARD_NAME, recordBean.getBrickyardName());
+        values.put(COL_BRICKYARD_TRADE_MARK, recordBean.getTradeMark());
+        values.put(COL_BRICKYARD_ADDRESS, recordBean.getAddress());
+        values.put(COL_BRICKYARD_AREA, recordBean.getArea());
+        values.put(COL_BRICKYARD_TYPE, recordBean.getBrickType());
+        values.put(COL_BRICKYARD_STATUS, recordBean.getStatus());
+        values.put(COL_FINANCIAL_YEAR, recordBean.getFinancialYear());
+        values.put(COL_INSTALLMENT_1, recordBean.getInstallment1());
+        values.put(COL_INSTALLMENT_2, recordBean.getInstallment2());
+        values.put(COL_INSTALLMENT_3, recordBean.getInstallment3());
+        values.put(COL_PRE_DUE_AMOUNT, recordBean.getPreDueAmount());
+        values.put(COL_PRE_VAT_PAID_AMOUNT, recordBean.getPreVatPaidAmount());
+        values.put(COL_TOTAL_PAID_AMOUNT, recordBean.getTotalPaidAmount());
+        values.put(COL_CURRENT_DUE_AMOUNT, recordBean.getCurrentDueAmount());
+        values.put(COL_NOTE, recordBean.getNote());
+
+        // Which row to update, based on the id
+        String selection = COL_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(recordBean.getId()) };
+
+        int count = db.update(TBL_RECORD, values, selection, selectionArgs);
+
+        mDbHelper.close();
+        return count;
+    }
+
+    public int deleteRecord(Context context, int id) {
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String selection = COL_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
+
+        int deletedRows = db.delete(TBL_RECORD, selection, selectionArgs);
+
+        mDbHelper.close();
+
+        return deletedRows;
     }
 
     public List<RecordBean> populateTransListByTypeSectorAndDateRange(Context context) {
@@ -332,48 +386,6 @@ public class DbHelper extends SQLiteOpenHelper {
         }
 
         return recordBeanList;
-    }
-
-
-    public int deleteRecord(Context context, int id) {
-        DbHelper mDbHelper = new DbHelper(context);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String selection = COL_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(id) };
-
-        int deletedRows = db.delete(TBL_RECORD, selection, selectionArgs);
-
-        mDbHelper.close();
-
-        return deletedRows;
-    }
-
-    public int updateRecord(Context context, RecordBean recordBean){
-        DbHelper mDbHelper = new DbHelper(context);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        // New value for one column
-        ContentValues values = new ContentValues();
-        /*values.put(COL_DATE, recordBean.getDate());
-        values.put(COL_TIME, recordBean.getTime());
-        values.put(COL_CATEGORY, recordBean.getCategory());
-        values.put(COL_DATE, recordBean.getDate());
-        values.put(COL_AMOUNT, recordBean.getAmount());
-        values.put(COL_NOTE, recordBean.getNote());
-        values.put(COL_DAY, recordBean.getDay());
-        values.put(COL_MONTH, recordBean.getMonth());
-        values.put(COL_YEAR, recordBean.getYear());
-        values.put(COL_DAY_NAME, recordBean.getDayName());*/
-
-        // Which row to update, based on the id
-        String selection = COL_ID + " = ?";
-        String[] selectionArgs = { String.valueOf(recordBean.getId()) };
-
-        int count = db.update(TBL_RECORD, values, selection, selectionArgs);
-
-        mDbHelper.close();
-        return count;
     }
 
     public long saveDefaultUserProfile(Context context){
@@ -1198,7 +1210,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
-                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+
+                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+", "+COL_TRADE_MARK+
                             " FROM " +TBL_BRICKYARD+
                             " ORDER BY "+COL_NAME+" ASC LIMIT "+limit;
 
@@ -1217,8 +1229,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 String area = cursor.getString(7);
                 String type = cursor.getString(8);
                 String status = cursor.getString(9);
+                String trademark = cursor.getString(10);
 
-                brickyardBeanList.add(new BrickyardBean(id, name, address, commissionerate, division, circle, sector, area, type, status));
+                brickyardBeanList.add(new BrickyardBean(id, name, trademark, address, commissionerate, division, circle, sector, area, type, status));
             }
         } finally {
             cursor.close();
@@ -1233,7 +1246,7 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
-                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+
+                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+", "+COL_TRADE_MARK+
                             " FROM " +TBL_BRICKYARD+
                             " WHERE " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'" +
                             " ORDER BY "+COL_NAME+" ASC";
@@ -1252,8 +1265,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 String area = cursor.getString(7);
                 String type = cursor.getString(8);
                 String status = cursor.getString(9);
+                String trademark = cursor.getString(10);
 
-                brickyardBeanList.add(new BrickyardBean(id, name, address, commissionerate, division, circle, sector, area, type, status));
+                brickyardBeanList.add(new BrickyardBean(id, name, trademark, address, commissionerate, division, circle, sector, area, type, status));
             }
         } finally {
             cursor.close();
@@ -1319,10 +1333,10 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String STR_QUERY = "SELECT "+COL_ID+", "+COL_NAME+", "+COL_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
-                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+
+                                    +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+", "+COL_TRADE_MARK+
                             " FROM " +TBL_BRICKYARD+
                             " WHERE "+COL_NAME+" = '"+brickyard_name+"' AND " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '"
-                                     +circle_name+ "' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "'";
+                                     +circle_name+ "' AND " +COL_SECTOR_NAME+" = '" +sector_name+ "' AND "+COL_COMMISSIONERATE_NAME+" = '"+commissionerate_name+"'";
 
         Cursor cursor = db.rawQuery(STR_QUERY, null);
 
@@ -1339,8 +1353,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 String area = cursor.getString(7);
                 String type = cursor.getString(8);
                 String status = cursor.getString(9);
+                String trademark = cursor.getString(10);
 
-                brickyardBean = new BrickyardBean(id, name, address, commissionerate, division, circle, sector, area, type, status);
+                brickyardBean = new BrickyardBean(id, name, trademark, address, commissionerate, division, circle, sector, area, type, status);
             }
         } finally {
             cursor.close();
@@ -1350,39 +1365,23 @@ public class DbHelper extends SQLiteOpenHelper {
         return brickyardBean;
     }
 
-    public String getBrickyardAddressByNameAndCommissionerateAndDivisionAndCircleAndSector(Context context, String name, String commissionerate_name, String division, String circle, String sector) {
-        String address = "";
-
-        DbHelper mDbHelper = new DbHelper(context);
-
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String STR_QUERY = "SELECT "+COL_ADDRESS+" FROM " +TBL_BRICKYARD+ " WHERE "+COL_NAME+" = '"+name+"' AND "+COL_COMMISSIONERATE_NAME+" = '"+commissionerate_name+"' AND "+COL_DIVISION_NAME+" = '" + division + "' AND "+COL_CIRCLE_NAME+" = '"+circle+"' AND "+COL_SECTOR_NAME+" = '"+sector+"'";
-        Cursor cursor = db.rawQuery(STR_QUERY, null);
-
-        try {
-            while (cursor.moveToNext()) {
-                address = cursor.getString(0);
-            }
-        } finally {
-            cursor.close();
-            mDbHelper.close();
-        }
-
-        return address;
-    }
-
     public long saveBrickyard(Context context, BrickyardBean brickyard){
         DbHelper mDbHelper = new DbHelper(context);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COL_NAME, brickyard.getName());
+        values.put(COL_TRADE_MARK, brickyard.getTradeMark());
         values.put(COL_ADDRESS, brickyard.getAddress());
+
         values.put(COL_COMMISSIONERATE_NAME, brickyard.getCommissionerate());
         values.put(COL_DIVISION_NAME, brickyard.getDivision());
         values.put(COL_CIRCLE_NAME, brickyard.getCircle());
         values.put(COL_SECTOR_NAME, brickyard.getSector());
+
+        values.put(COL_BRICKYARD_AREA, brickyard.getArea());
+        values.put(COL_BRICKYARD_TYPE, brickyard.getType());
+        values.put(COL_BRICKYARD_STATUS, brickyard.getStatus());
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId = db.insert(TBL_BRICKYARD, null, values);
@@ -1390,6 +1389,90 @@ public class DbHelper extends SQLiteOpenHelper {
         mDbHelper.close();
 
         return newRowId;
+    }
+
+    public int updateBrickyard(Context context, BrickyardBean brickyard){
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        // New value for one column
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, brickyard.getName());
+        values.put(COL_TRADE_MARK, brickyard.getTradeMark());
+        values.put(COL_ADDRESS, brickyard.getAddress());
+
+        values.put(COL_COMMISSIONERATE_NAME, brickyard.getCommissionerate());
+        values.put(COL_DIVISION_NAME, brickyard.getDivision());
+        values.put(COL_CIRCLE_NAME, brickyard.getCircle());
+        values.put(COL_SECTOR_NAME, brickyard.getSector());
+
+        values.put(COL_BRICKYARD_AREA, brickyard.getArea());
+        values.put(COL_BRICKYARD_TYPE, brickyard.getType());
+        values.put(COL_BRICKYARD_STATUS, brickyard.getStatus());
+
+        // Which row to update, based on the id
+        String selection = COL_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(brickyard.getId()) };
+
+        int count = db.update(TBL_BRICKYARD, values, selection, selectionArgs);
+
+        mDbHelper.close();
+        return count;
+    }
+
+    public RecordBean getRecordBeanByBrickyardNameAndCommissionerateAndDivisionAndCircleAndSectorAndFinancialYear(Context context, String brickyard_name,
+                       String commissionerate_name, String division_name, String circle_name, String sector_name, String financial_year) {
+
+        DbHelper mDbHelper = new DbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String STR_QUERY = "SELECT "+COL_ID+", "+COL_BRICKYARD_NAME+", "+COL_BRICKYARD_ADDRESS+", "+COL_COMMISSIONERATE_NAME+", "+COL_DIVISION_NAME+", "+COL_CIRCLE_NAME+", "
+                +COL_SECTOR_NAME+", "+COL_BRICKYARD_AREA+", "+COL_BRICKYARD_TYPE+", "+COL_BRICKYARD_STATUS+", "
+                +COL_FINANCIAL_YEAR+", "+COL_INSTALLMENT_1+", "+COL_INSTALLMENT_2+", "+COL_INSTALLMENT_3+", "
+                +COL_PRE_DUE_AMOUNT+", "+COL_PRE_VAT_PAID_AMOUNT+", "+COL_TOTAL_PAID_AMOUNT+", "+COL_CURRENT_DUE_AMOUNT+", "
+                +COL_NOTE+", "+COL_DATE+", "+COL_BRICKYARD_TRADE_MARK
+                +" FROM " +TBL_RECORD
+                +" WHERE " +COL_BRICKYARD_NAME+" = '"+brickyard_name+"' AND " +COL_DIVISION_NAME+ " = '" +division_name+ "' AND " +COL_CIRCLE_NAME+ " = '" +circle_name
+                +"' AND " +COL_SECTOR_NAME+ " = '" +sector_name+ "' AND "+COL_COMMISSIONERATE_NAME+" = '"+commissionerate_name
+                +"' AND " +COL_FINANCIAL_YEAR+" = '"+financial_year+"'";
+
+        Cursor cursor = db.rawQuery(STR_QUERY, null);
+
+        RecordBean recordBean = null;
+        try {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
+                String brickyardName = cursor.getString(1);
+                String address = cursor.getString(2);
+                String commissionerate = cursor.getString(3);
+                String division = cursor.getString(4);
+                String circle = cursor.getString(5);
+                String sector = cursor.getString(6);
+                String area = cursor.getString(7);
+                String brickType = cursor.getString(8);
+                String status = cursor.getString(9);
+                String financialYear = cursor.getString(10);
+                Double installment1 = cursor.getDouble(11);
+                Double installment2 = cursor.getDouble(12);
+                Double installment3 = cursor.getDouble(13);
+                Double preDueAmount = cursor.getDouble(14);
+                Double preVatPaidAmount = cursor.getDouble(15);
+                Double totalPaidAmount = cursor.getDouble(16);
+                Double currentDueAmount = cursor.getDouble(17);
+                String note = cursor.getString(18);
+                long longDate = cursor.getLong(19);
+                String tradeMark = cursor.getString(20);
+
+                recordBean = new RecordBean(id, longDate, commissionerate, division, circle, sector, brickyardName, tradeMark, address, area, brickType,
+                        status, financialYear, installment1, installment2, installment3, preDueAmount, preVatPaidAmount, totalPaidAmount, currentDueAmount, note);
+
+            }
+        } finally {
+            cursor.close();
+            mDbHelper.close();
+        }
+
+        return recordBean;
     }
 
     //----BACKUP----------------------------------------------------------------------

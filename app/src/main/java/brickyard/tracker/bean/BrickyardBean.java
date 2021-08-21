@@ -2,7 +2,7 @@ package brickyard.tracker.bean;
 
 public class BrickyardBean {
     private int id;
-    private String name, address, commissionerate, division, circle, sector, area, type, status;
+    private String name, tradeMark, address, commissionerate, division, circle, sector, area, type, status;
 
     public String getCommissionerate() { return commissionerate; }
 
@@ -54,10 +54,15 @@ public class BrickyardBean {
         this.address = address;
     }
 
+    public String getTradeMark() { return tradeMark; }
 
-    public BrickyardBean(int id, String name, String address, String commissionerate, String division, String circle, String sector, String area, String type, String status) {
+    public void setTradeMark(String tradeMark) { this.tradeMark = tradeMark; }
+
+    public BrickyardBean(int id, String name, String tradeMark, String address,
+                         String commissionerate, String division, String circle, String sector, String area, String type, String status) {
         this.id = id;
         this.name = name;
+        this.tradeMark = tradeMark;
         this.address = address;
         this.commissionerate = commissionerate;
         this.division = division;
@@ -68,8 +73,10 @@ public class BrickyardBean {
         this.status = status;
     }
 
-    public BrickyardBean(String name, String address, String commissionerate, String division, String circle, String sector, String area, String type, String status) {
+    public BrickyardBean(String name, String tradeMark, String address,
+                         String commissionerate, String division, String circle, String sector, String area, String type, String status) {
         this.name = name;
+        this.tradeMark = tradeMark;
         this.address = address;
         this.commissionerate = commissionerate;
         this.division = division;

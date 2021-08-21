@@ -34,8 +34,9 @@ public class AddRecord extends AppCompatActivity {
 
     DbHelper dbHelper;
 
-    TextView commissionerateTextView, divisionTextView, circleTextView, sectorTextView;
-    TextView brickyardTextView, addressTextView, areaTextView, brickTypeTextView, statusTextView, financialYearTextView;
+    TextView commissionerateTextView, divisionTextView, circleTextView, sectorTextView, brickyardTextView;
+    EditText tradeMarkTextView, addressTextView;
+    TextView areaTextView, brickTypeTextView, statusTextView, financialYearTextView;
 
     EditText installment1, installment2, installment3, noteTextView;
     EditText preDueAmount, preVatPaidAmount, totalPaidAmount, currentDueAmount;
@@ -55,12 +56,14 @@ public class AddRecord extends AppCompatActivity {
             sectorTextView = (TextView) findViewById(R.id.sectorTextView);
 
             brickyardTextView = (TextView) findViewById(R.id.brickyardTextView);
-            addressTextView = (TextView) findViewById(R.id.addressTextView);
+            tradeMarkTextView = (EditText) findViewById(R.id.tradeMarkTextView);
+            addressTextView = (EditText) findViewById(R.id.addressTextView);
+
             areaTextView = (TextView) findViewById(R.id.areaTextView);
             brickTypeTextView = (TextView) findViewById(R.id.brickTypeTextView);
             statusTextView = (TextView) findViewById(R.id.statusTextView);
-            financialYearTextView = (TextView) findViewById(R.id.financialYearTextView);
 
+            financialYearTextView = (TextView) findViewById(R.id.financialYearTextView);
             installment1 = (EditText) findViewById(R.id.installment1);
             installment2 = (EditText) findViewById(R.id.installment2);
             installment3 = (EditText) findViewById(R.id.installment3);
@@ -158,7 +161,7 @@ public class AddRecord extends AppCompatActivity {
                             alertDialogBuilder.setMessage("New record successfully saved")
                             .setPositiveButton("Close", new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }}).show();
 
-                            reset_form();
+                            //reset_form();
 
                         } else {
 
@@ -240,6 +243,14 @@ public class AddRecord extends AppCompatActivity {
                 return -1;
             }*/
 
+            String strCommissionerate = commissionerateTextView.getText().toString();
+            if (strCommissionerate.length() == 0 || strCommissionerate.equalsIgnoreCase(Constant.SELECT)) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+                alertDialogBuilder.setMessage("Select Commissionerate").setPositiveButton("Close", new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }}).show();
+
+                return -1;
+            }
+
             String strDivision = divisionTextView.getText().toString();
             if (strDivision.length() == 0 || strDivision.equalsIgnoreCase(Constant.SELECT)) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
@@ -272,6 +283,7 @@ public class AddRecord extends AppCompatActivity {
                 return -1;
             }
 
+            String strTradeMark = tradeMarkTextView.getText().toString();
             String strAddress = addressTextView.getText().toString();
 
             String strArea = areaTextView.getText().toString();
@@ -317,48 +329,105 @@ public class AddRecord extends AppCompatActivity {
                 return -1;
             }
 
+            if (strInstallment1.equals("")) { strInstallment1 = "0"; }
+            if (strInstallment2.equals("")) { strInstallment2 = "0"; }
+            if (strInstallment3.equals("")) { strInstallment3 = "0"; }
+
             String strPreDueAmount = preDueAmount.getText().toString();
             if (strPreDueAmount.length() == 0) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+                /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
                 alertDialogBuilder.setMessage("Enter Pre Due Amount").setPositiveButton("Close", new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }}).show();
 
-                return -1;
+                return -1;*/
+
+                strPreDueAmount = "0";
             }
 
             String strPreVatPaidAmount = preVatPaidAmount.getText().toString();
             if (strPreVatPaidAmount.length() == 0) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+                /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
                 alertDialogBuilder.setMessage("Enter Pre VAT Paid Amount").setPositiveButton("Close", new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }}).show();
 
-                return -1;
+                return -1;*/
+
+                strPreVatPaidAmount = "0";
             }
 
             String strTotalPaidAmount = totalPaidAmount.getText().toString();
             if (strTotalPaidAmount.length() == 0) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+                /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
                 alertDialogBuilder.setMessage("Enter Total Paid Amount").setPositiveButton("Close", new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }}).show();
 
-                return -1;
+                return -1;*/
+
+                strTotalPaidAmount = "0";
             }
 
             String strCurrentDueAmount = currentDueAmount.getText().toString();
             if (strCurrentDueAmount.length() == 0) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
+                /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddRecord.this);
                 alertDialogBuilder.setMessage("Enter Current Due Amount").setPositiveButton("Close", new DialogInterface.OnClickListener() {@Override public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }}).show();
 
-                return -1;
+                return -1;*/
+
+                strCurrentDueAmount = "0";
             }
 
             String strNote = noteTextView.getText().toString();
             strNote = strNote.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
-            RecordBean newRecordBean = new RecordBean(System.currentTimeMillis(), strDivision, strCircle, strSector, strBrickyard, strAddress,
-                    strArea, strBrickType, strStatus, strFinancialYear, strInstallment1, strInstallment2, strInstallment3, strPreDueAmount,
-                    strPreVatPaidAmount, strTotalPaidAmount, strCurrentDueAmount, strNote);
+            //---Update BrickYard----------------------------------
+            BrickyardBean brickyardBean = dbHelper.getBrickYardBeanByNameAndCommissionerateAndDivisionAndCircleAndSector(
+                    getApplicationContext(), strBrickyard, strCommissionerate, strDivision, strCircle, strSector);
 
-            newRecordId = dbHelper.saveRecord(getApplicationContext(), newRecordBean);
+            brickyardBean.setTradeMark(strTradeMark);
+            brickyardBean.setAddress(strAddress);
+            brickyardBean.setArea(strArea);
+            brickyardBean.setType(strBrickType);
+            brickyardBean.setStatus(strStatus);
 
-            return newRecordId;
+            dbHelper.updateBrickyard(getApplicationContext(), brickyardBean);
+
+            //---Save Record--------------------------------------
+            RecordBean recordBean = dbHelper.getRecordBeanByBrickyardNameAndCommissionerateAndDivisionAndCircleAndSectorAndFinancialYear(
+                    getApplicationContext(), strBrickyard, strCommissionerate, strDivision, strCircle, strSector, strFinancialYear);
+
+            if(recordBean != null){
+
+                recordBean.setTradeMark(strTradeMark);
+                recordBean.setAddress(strAddress);
+                recordBean.setArea(strArea);
+                recordBean.setBrickType(strBrickType);
+                recordBean.setStatus(strStatus);
+
+                recordBean.setFinancialYear(strFinancialYear);
+                recordBean.setInstallment1(Double.parseDouble(strInstallment1));
+                recordBean.setInstallment2(Double.parseDouble(strInstallment2));
+                recordBean.setInstallment3(Double.parseDouble(strInstallment3));
+
+                recordBean.setPreDueAmount(Double.parseDouble(strPreDueAmount));
+                recordBean.setPreVatPaidAmount(Double.parseDouble(strPreVatPaidAmount));
+                recordBean.setTotalPaidAmount(Double.parseDouble(strTotalPaidAmount));
+                recordBean.setCurrentDueAmount(Double.parseDouble(strCurrentDueAmount));
+
+                recordBean.setNote(strNote);
+
+                dbHelper.updateRecord(getApplicationContext(), recordBean);
+
+                return recordBean.getId();
+
+            } else {
+
+                RecordBean newRecordBean = new RecordBean(System.currentTimeMillis(), strCommissionerate, strDivision, strCircle, strSector, strBrickyard, strTradeMark,
+                        strAddress, strArea, strBrickType, strStatus, strFinancialYear, Double.parseDouble(strInstallment1), Double.parseDouble(strInstallment2),
+                        Double.parseDouble(strInstallment3), Double.parseDouble(strPreDueAmount), Double.parseDouble(strPreVatPaidAmount),
+                        Double.parseDouble(strTotalPaidAmount), Double.parseDouble(strCurrentDueAmount), strNote);
+
+                newRecordId = dbHelper.saveRecord(getApplicationContext(), newRecordBean);
+
+                return newRecordId;
+
+            }
 
         } catch (Exception ex){
             Toast.makeText(getApplicationContext(), "Failed to save new record. Exception : " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -718,45 +787,77 @@ public class AddRecord extends AppCompatActivity {
     private void showFinancialYearList() {
         try {
 
-            List<String> yearList = new ArrayList<>();
-            for(int year = 2020; year <= 2030; year++) {
-                yearList.addAll(Collections.singleton(year + " - " + (year + 1)));
+            String commissionerate = commissionerateTextView.getText().toString().trim();
+            String division = divisionTextView.getText().toString().trim();
+            String circle = circleTextView.getText().toString().trim();
+            String sector = sectorTextView.getText().toString().trim();
+            String brickyardName = brickyardTextView.getText().toString().trim();
+
+            if(brickyardName.equals("") || brickyardName.equals(Constant.SELECT)){
+
+                Toast.makeText(getApplicationContext(), "Select Brick Filed", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                List<String> yearList = new ArrayList<>();
+                for(int year = 2020; year <= 2030; year++) {
+                    yearList.addAll(Collections.singleton(year + " - " + (year + 1)));
+                }
+                String[] itemsArray = new String[yearList.size()];
+                String[] financialYearArray = yearList.toArray(itemsArray);
+
+                // setup the alert builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
+
+                builder.setSingleChoiceItems(financialYearArray, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // user checked an item
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+                // add OK and Cancel buttons
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog)dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+
+                        if(!brickyardName.equals(Constant.SELECT) && !brickyardName.equals("")) {
+
+                            RecordBean recordBean = dbHelper.getRecordBeanByBrickyardNameAndCommissionerateAndDivisionAndCircleAndSectorAndFinancialYear(
+                                    getApplicationContext(), brickyardName, commissionerate, division, circle, sector, checkedItem.toString());
+
+                            if(recordBean != null) {
+                                installment1.setText(recordBean.getInstallment1().toString());
+                                installment2.setText(recordBean.getInstallment2().toString());
+                                installment3.setText(recordBean.getInstallment3().toString());
+
+                                preDueAmount.setText(recordBean.getPreDueAmount().toString());
+                                preVatPaidAmount.setText(recordBean.getPreVatPaidAmount().toString());
+                                totalPaidAmount.setText(recordBean.getTotalPaidAmount().toString());
+                                currentDueAmount.setText(recordBean.getCurrentDueAmount().toString());
+                            }
+
+                        }
+
+                        financialYearTextView.setText(checkedItem.toString());
+                    }
+                });
+
+                // create and show the alert dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
+
             }
-            String[] itemsArray = new String[yearList.size()];
-            String[] financialYearArray = yearList.toArray(itemsArray);
-
-            // setup the alert builder
-            AlertDialog.Builder builder = new AlertDialog.Builder(AddRecord.this);
-
-            builder.setSingleChoiceItems(financialYearArray, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // user checked an item
-                }
-            });
-
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
-
-                    financialYearTextView.setText(checkedItem.toString());
-                }
-            });
-
-            // create and show the alert dialog
-            AlertDialog dialog = builder.create();
-            dialog.show();
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.RED);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLUE);
 
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -769,6 +870,7 @@ public class AddRecord extends AppCompatActivity {
             String division = divisionTextView.getText().toString().trim();
             String circle = circleTextView.getText().toString().trim();
             String sector = sectorTextView.getText().toString().trim();
+            String financialYear = financialYearTextView.getText().toString().trim();
 
             String[] brickyard_arr = (String[]) dbHelper.getBrickYardNameListByCommissionerateDivisionCircleSector(getApplicationContext(), commissionerate, division, circle, sector);
             //Arrays.sort(category_arr);
@@ -801,14 +903,29 @@ public class AddRecord extends AppCompatActivity {
 
                     brickyardTextView.setText(checkedItem.toString());
 
-                    //String address = dbHelper.getBrickyardAddressByNameAndCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector);
-                    //addressTextView.setText(address);
-
                     BrickyardBean brickyardBean = dbHelper.getBrickYardBeanByNameAndCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector);
                     addressTextView.setText(brickyardBean.getAddress());
                     areaTextView.setText(brickyardBean.getArea());
                     brickTypeTextView.setText(brickyardBean.getType());
                     statusTextView.setText(brickyardBean.getStatus());
+
+                    if(!financialYear.equals(Constant.SELECT) && !financialYear.equals("")) {
+
+                        RecordBean recordBean = dbHelper.getRecordBeanByBrickyardNameAndCommissionerateAndDivisionAndCircleAndSectorAndFinancialYear(
+                                getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector, financialYear);
+
+                        if(recordBean != null) {
+                            installment1.setText(recordBean.getInstallment1().toString());
+                            installment2.setText(recordBean.getInstallment2().toString());
+                            installment3.setText(recordBean.getInstallment3().toString());
+
+                            preDueAmount.setText(recordBean.getPreDueAmount().toString());
+                            preVatPaidAmount.setText(recordBean.getPreVatPaidAmount().toString());
+                            totalPaidAmount.setText(recordBean.getTotalPaidAmount().toString());
+                            currentDueAmount.setText(recordBean.getCurrentDueAmount().toString());
+                        }
+
+                    }
                 }
             });
 
@@ -844,7 +961,7 @@ public class AddRecord extends AppCompatActivity {
             TextView sector = (TextView) promptView.findViewById(R.id.sectorTextView);
 
             final EditText name = (EditText) promptView.findViewById(R.id.name);
-            final EditText address = (EditText) promptView.findViewById(R.id.address);
+            //final EditText address = (EditText) promptView.findViewById(R.id.address);
 
             if(divisionVal.equals("") || divisionVal.equals(Constant.SELECT) || circleVal.equals("") || circleVal.equals(Constant.SELECT) || sectorVal.equals("") || sectorVal.equals(Constant.SELECT)) {
 
@@ -869,18 +986,18 @@ public class AddRecord extends AppCompatActivity {
                         String newName = name.getText().toString().trim();
                         newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
-                        String newAddress = address.getText().toString().trim();
-                        newAddress = newAddress.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
+                        //String newAddress = address.getText().toString().trim();
+                        //newAddress = newAddress.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
                         if (newName.length() > 0) {
                             int countExisting = dbHelper.countBrickyardNameByCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), newName, commissionerateVal, divisionVal, circleVal, sectorVal);
                             if (countExisting == 0) {
-                                dbHelper.saveBrickyard(getApplicationContext(), new BrickyardBean(newName, newAddress, commissionerateVal, divisionVal, circleVal, sectorVal, "", "", ""));
+                                dbHelper.saveBrickyard(getApplicationContext(), new BrickyardBean(newName,"", "", commissionerateVal, divisionVal, circleVal, sectorVal, "", "", ""));
                             }
                         }
 
                         brickyardTextView.setText(newName);
-                        addressTextView.setText(newAddress);
+                        //addressTextView.setText(newAddress);
 
                         dialog.cancel();
 
