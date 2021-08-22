@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import brickyard.tracker.bean.BrickyardBean;
@@ -35,10 +34,9 @@ public class AddRecord extends AppCompatActivity {
     DbHelper dbHelper;
 
     TextView commissionerateTextView, divisionTextView, circleTextView, sectorTextView, brickyardTextView;
-    EditText tradeMarkTextView, addressTextView;
-    TextView areaTextView, brickTypeTextView, statusTextView, financialYearTextView;
+    TextView tradeMarkTextView, areaTextView, brickTypeTextView, statusTextView, financialYearTextView;
 
-    EditText installment1, installment2, installment3, noteTextView;
+    EditText addressTextView, installment1, installment2, installment3, noteTextView;
     EditText preDueAmount, preVatPaidAmount, totalPaidAmount, currentDueAmount;
 
     @Override
@@ -56,7 +54,7 @@ public class AddRecord extends AppCompatActivity {
             sectorTextView = (TextView) findViewById(R.id.sectorTextView);
 
             brickyardTextView = (TextView) findViewById(R.id.brickyardTextView);
-            tradeMarkTextView = (EditText) findViewById(R.id.tradeMarkTextView);
+            tradeMarkTextView = (TextView) findViewById(R.id.tradeMarkTextView);
             addressTextView = (EditText) findViewById(R.id.addressTextView);
 
             areaTextView = (TextView) findViewById(R.id.areaTextView);
@@ -480,21 +478,22 @@ public class AddRecord extends AppCompatActivity {
                 }
             });
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(commissionerateArray.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    commissionerateTextView.setText(checkedItem.toString());
-                    divisionTextView.setText(Constant.SELECT);
-                    circleTextView.setText(Constant.SELECT);
-                    sectorTextView.setText(Constant.SELECT);
-                    brickyardTextView.setText(Constant.SELECT);
-                    addressTextView.setText("");
-                }
-            });
+                        commissionerateTextView.setText(checkedItem.toString());
+                        divisionTextView.setText(Constant.SELECT);
+                        circleTextView.setText(Constant.SELECT);
+                        sectorTextView.setText(Constant.SELECT);
+                        brickyardTextView.setText(Constant.SELECT);
+                        addressTextView.setText("");
+                    }
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -537,20 +536,21 @@ public class AddRecord extends AppCompatActivity {
                 }
             });
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+           if(division_arr.length > 0) {
+               builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       ListView lw = ((AlertDialog) dialog).getListView();
+                       Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    divisionTextView.setText(checkedItem.toString());
-                    circleTextView.setText(Constant.SELECT);
-                    sectorTextView.setText(Constant.SELECT);
-                    brickyardTextView.setText(Constant.SELECT);
-                    addressTextView.setText("");
-                }
-            });
+                       divisionTextView.setText(checkedItem.toString());
+                       circleTextView.setText(Constant.SELECT);
+                       sectorTextView.setText(Constant.SELECT);
+                       brickyardTextView.setText(Constant.SELECT);
+                       addressTextView.setText("");
+                   }
+               });
+           }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -584,19 +584,20 @@ public class AddRecord extends AppCompatActivity {
 
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(circle_arr.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    circleTextView.setText(checkedItem.toString());
-                    sectorTextView.setText(Constant.SELECT);
-                    brickyardTextView.setText(Constant.SELECT);
-                    addressTextView.setText("");
-                }
-            });
+                        circleTextView.setText(checkedItem.toString());
+                        sectorTextView.setText(Constant.SELECT);
+                        brickyardTextView.setText(Constant.SELECT);
+                        addressTextView.setText("");
+                    }
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -630,18 +631,19 @@ public class AddRecord extends AppCompatActivity {
 
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }});
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(sector_arr.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    sectorTextView.setText(checkedItem.toString());
-                    brickyardTextView.setText(Constant.SELECT);
-                    addressTextView.setText("");
-                }
-            });
+                        sectorTextView.setText(checkedItem.toString());
+                        brickyardTextView.setText(Constant.SELECT);
+                        addressTextView.setText("");
+                    }
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -676,16 +678,17 @@ public class AddRecord extends AppCompatActivity {
                 }
             });
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(areaArray.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    areaTextView.setText(checkedItem.toString());
-                }
-            });
+                        areaTextView.setText(checkedItem.toString());
+                    }
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -719,16 +722,17 @@ public class AddRecord extends AppCompatActivity {
                 }
             });
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(brickTypeArray.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    brickTypeTextView.setText(checkedItem.toString());
-                }
-            });
+                        brickTypeTextView.setText(checkedItem.toString());
+                    }
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -762,16 +766,17 @@ public class AddRecord extends AppCompatActivity {
                 }
             });
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(statusTypeArray.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    statusTextView.setText(checkedItem.toString());
-                }
-            });
+                        statusTextView.setText(checkedItem.toString());
+                    }
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -845,6 +850,16 @@ public class AddRecord extends AppCompatActivity {
                                 currentDueAmount.setText(recordBean.getCurrentDueAmount().toString());
                             }
 
+                        } else {
+
+                            installment1.setText("");
+                            installment2.setText("");
+                            installment3.setText("");
+
+                            preDueAmount.setText("");
+                            preVatPaidAmount.setText("");
+                            totalPaidAmount.setText("");
+                            currentDueAmount.setText("");
                         }
 
                         financialYearTextView.setText(checkedItem.toString());
@@ -894,40 +909,52 @@ public class AddRecord extends AppCompatActivity {
                 }
             });
 
-            // add OK and Cancel buttons
-            builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    ListView lw = ((AlertDialog)dialog).getListView();
-                    Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
+            if(brickyard_arr.length > 0) {
+                builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        Object checkedItem = lw.getAdapter().getItem(lw.getCheckedItemPosition());
 
-                    brickyardTextView.setText(checkedItem.toString());
+                        brickyardTextView.setText(checkedItem.toString());
 
-                    BrickyardBean brickyardBean = dbHelper.getBrickYardBeanByNameAndCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector);
-                    addressTextView.setText(brickyardBean.getAddress());
-                    areaTextView.setText(brickyardBean.getArea());
-                    brickTypeTextView.setText(brickyardBean.getType());
-                    statusTextView.setText(brickyardBean.getStatus());
+                        BrickyardBean brickyardBean = dbHelper.getBrickYardBeanByNameAndCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector);
+                        tradeMarkTextView.setText(brickyardBean.getTradeMark());
+                        addressTextView.setText(brickyardBean.getAddress());
+                        areaTextView.setText(brickyardBean.getArea());
+                        brickTypeTextView.setText(brickyardBean.getType());
+                        statusTextView.setText(brickyardBean.getStatus());
 
-                    if(!financialYear.equals(Constant.SELECT) && !financialYear.equals("")) {
+                        if (!financialYear.equals(Constant.SELECT) && !financialYear.equals("")) {
 
-                        RecordBean recordBean = dbHelper.getRecordBeanByBrickyardNameAndCommissionerateAndDivisionAndCircleAndSectorAndFinancialYear(
-                                getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector, financialYear);
+                            RecordBean recordBean = dbHelper.getRecordBeanByBrickyardNameAndCommissionerateAndDivisionAndCircleAndSectorAndFinancialYear(
+                                    getApplicationContext(), checkedItem.toString(), commissionerate, division, circle, sector, financialYear);
 
-                        if(recordBean != null) {
-                            installment1.setText(recordBean.getInstallment1().toString());
-                            installment2.setText(recordBean.getInstallment2().toString());
-                            installment3.setText(recordBean.getInstallment3().toString());
+                            if (recordBean != null) {
+                                installment1.setText(recordBean.getInstallment1().toString());
+                                installment2.setText(recordBean.getInstallment2().toString());
+                                installment3.setText(recordBean.getInstallment3().toString());
 
-                            preDueAmount.setText(recordBean.getPreDueAmount().toString());
-                            preVatPaidAmount.setText(recordBean.getPreVatPaidAmount().toString());
-                            totalPaidAmount.setText(recordBean.getTotalPaidAmount().toString());
-                            currentDueAmount.setText(recordBean.getCurrentDueAmount().toString());
+                                preDueAmount.setText(recordBean.getPreDueAmount().toString());
+                                preVatPaidAmount.setText(recordBean.getPreVatPaidAmount().toString());
+                                totalPaidAmount.setText(recordBean.getTotalPaidAmount().toString());
+                                currentDueAmount.setText(recordBean.getCurrentDueAmount().toString());
+                            }
+
+                        } else {
+
+                            installment1.setText("");
+                            installment2.setText("");
+                            installment3.setText("");
+
+                            preDueAmount.setText("");
+                            preVatPaidAmount.setText("");
+                            totalPaidAmount.setText("");
+                            currentDueAmount.setText("");
                         }
-
                     }
-                }
-            });
+                });
+            }
 
             // create and show the alert dialog
             AlertDialog dialog = builder.create();
@@ -961,6 +988,7 @@ public class AddRecord extends AppCompatActivity {
             TextView sector = (TextView) promptView.findViewById(R.id.sectorTextView);
 
             final EditText name = (EditText) promptView.findViewById(R.id.name);
+            final EditText tradeMark = (EditText) promptView.findViewById(R.id.tradeMark);
             //final EditText address = (EditText) promptView.findViewById(R.id.address);
 
             if(divisionVal.equals("") || divisionVal.equals(Constant.SELECT) || circleVal.equals("") || circleVal.equals(Constant.SELECT) || sectorVal.equals("") || sectorVal.equals(Constant.SELECT)) {
@@ -986,17 +1014,21 @@ public class AddRecord extends AppCompatActivity {
                         String newName = name.getText().toString().trim();
                         newName = newName.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
+                        String newTradeMark = tradeMark.getText().toString().trim();
+                        newTradeMark = newTradeMark.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
+
                         //String newAddress = address.getText().toString().trim();
                         //newAddress = newAddress.replace(Constant.NOT_ALLOWED_CHAR, Constant.REPLACED_CHAR);
 
                         if (newName.length() > 0) {
                             int countExisting = dbHelper.countBrickyardNameByCommissionerateAndDivisionAndCircleAndSector(getApplicationContext(), newName, commissionerateVal, divisionVal, circleVal, sectorVal);
                             if (countExisting == 0) {
-                                dbHelper.saveBrickyard(getApplicationContext(), new BrickyardBean(newName,"", "", commissionerateVal, divisionVal, circleVal, sectorVal, "", "", ""));
+                                dbHelper.saveBrickyard(getApplicationContext(), new BrickyardBean(newName, newTradeMark, "", commissionerateVal, divisionVal, circleVal, sectorVal, "", "", ""));
                             }
                         }
 
                         brickyardTextView.setText(newName);
+                        tradeMarkTextView.setText(newTradeMark);
                         //addressTextView.setText(newAddress);
 
                         dialog.cancel();
